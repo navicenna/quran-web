@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-        <title>My scratchboard page</title>
+        <title>Quran Analysis Project</title>
     </head>
 
     <body>
@@ -20,7 +20,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">My scratchpad</a>
+      <a class="navbar-brand" href="#">Quran Analysis Project</a>
     </div>
   </div>
 </nav>
@@ -28,19 +28,32 @@
 
 <div class="container">
 
-        {% for comment in comments %}
+{% for comment in comments %}
     <div class="row">
-        {{ comment }}
+        {{ comment.content }}
     </div>
 {% endfor %}
 
         <div class="row">
             <form action="." method="POST">
-                <textarea class="form-control" name="contents" placeholder="Enter a comment"></textarea>
-                <input type="submit" value="Post comment">
+                <textarea class="form-control" name="contents" placeholder="Enter an Arabic word or phrase"></textarea>
+                <input type="submit" name="submit" value="Calculate TGV">
             </form>
         </div>
 
+        <div class="row">
+            <form action="." method="POST">
+                <input type="submit" name="submit"  value="Clear">
+            </form>
+        </div>
+
+testing
+<br>
+{% print(t) %}
+
+{% for x in t %}
+<li>{{x}}</li>
+{% endfor %}
 </div><!-- /.container -->
 
     </body>

@@ -2,18 +2,92 @@
 # A very simple Flask Hello World app for you to get started with...
 
 from flask import Flask, redirect, render_template, request, url_for
+import logging
+from flask_debugtoolbar import DebugToolbarExtension
+from flask.ext.sqlalchemy import SQLAlchemy
+from funcs import init_tgv_dict, calc_val, transString, verse2dict
 
 app = Flask(__name__)
+app.debug = True
+app.config["DEBUG"] = True
+app.config["SECRET_KEY"] = 'SK119'
+app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 
-comments = []
 
+toolbar = DebugToolbarExtension(app)
+
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    username="navid",
+    password="triumph119",
+    hostname="navid.mysql.pythonanywhere-services.com",
+    databasename="navid$qdb",
+)
+app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+
+db = SQLAlchemy(app)
+
+class Word(db.Model):
+
+    __tablename__ = "words"
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(4096))
+
+
+class Quran(db.Model):
+
+    __tablename__ = "q_tbl"
+
+    id = db.Column(db.Integer, primary_key=True)
+    nSura = db.Column(db.Integer)
+    nVerse = db.Column(db.Integer)
+    verse = db.Column(db.String(4096))
+
+
+
+# Load Quran into table. First delete it, then add rows.
+n = Quran.query.delete()
+
+quran_file = "/home/navid/mysite/quran-simple.txt"
+
+testlines=[]
+with open(quran_file, "r") as f:
+    lines = [l.rstrip('\n') for l in f.readlines()]
+    for x in range(10):
+        testlines.append(lines[x])
+
+for l in lines:
+    temp_verse = verse2dict(l)
+
+
+
+
+
+
+# Main web application function
 @app.route("/", methods=["GET", "POST"])
 def index():
+    global comments
+    test=['a', 'b']
     if request.method == "GET":
-        return render_template("main_page.html", comments=comments)
+        return render_template("main_page.html", comments=Word.query.all(), t=testlines)
     else:
-        com = request.form["contents"]
-        comments.append(com[0:2])
+        execute_this = request.form["submit"]
+        logging.error(request.form)
+        if execute_this == "Clear":
+            n = Word.query.delete()
+            db.session.commit()
+            print(n)
+        elif execute_this == "Calculate TGV":
+            word = request.form["contents"]
+            addition = calc_val(transString(word), "tgv")
+            string = "TGV of " + word + " is: " + str(addition)
+            comment = Word(content=string)
+            db.session.add(comment)
+            db.session.commit()
+        elif execute_this == "Get verse":
+            pass
         return redirect(url_for('index'))
 
 
@@ -22,72 +96,12 @@ def index():
 def wibble():
     return 'test'
 
-# Quran web analysis code
 
-# This Python file uses the following encoding: utf-8
-# Test commit
 
-import os, sys, re, csv
 
-arabic2english = {
-      u"\u0621": "'", # hamza-on-the-line
-      u"\u0622": "|", # madda
-      u"\u0623": ">", # hamza-on-'alif
-      u"\u0624": "&", # hamza-on-waaw, treat as waaw for now
-      u"\u0625": "<", # hamza-under-'alif
-      u"\u0626": "}", # hamza-on-yaa'
-      u"\u0627": "A", # bare 'alif
-      u"\u0628": "b", # baa'
-      u"\u0629": "h", # taa' marbuuTa, treat as haa'
-      u"\u062A": "t", # taa'
-      u"\u062B": "v", # thaa'
-      u"\u062C": "j", # jiim
-      u"\u062D": "H", # Haa'
-      u"\u062E": "x", # khaa'
-      u"\u062F": "d", # daal
-      u"\u0630": "*", # dhaal
-      u"\u0631": "r", # raa'
-      u"\u0632": "z", # zaay
-      u"\u0633": "s", # siin
-      u"\u0634": "$", # shiin
-      u"\u0635": "S", # Saad
-      u"\u0636": "D", # Daad
-      u"\u0637": "T", # Taa'
-      u"\u0638": "Z", # Zaa' (DHaa')
-      u"\u0639": "E", # cayn
-      u"\u063A": "g", # ghayn
-      u"\u0640": "_", # taTwiil
-      u"\u0641": "f", # faa'
-      u"\u0642": "q", # qaaf
-      u"\u0643": "k", # kaaf
-      u"\u0644": "l", # laam
-      u"\u0645": "m", # miim
-      u"\u0646": "n", # nuun
-      u"\u0647": "h", # haa'
-      u"\u0648": "w", # waaw
-      u"\u0649": "y", # 'alif maqSuura, replace with yaa'
-      u"\u064A": "y", # yaa'
-      u"\u064B": "F", # fatHatayn
-      u"\u064C": "N", # Dammatayn
-      u"\u064D": "K", # kasratayn
-      u"\u064E": "a", # fatHa
-      u"\u064F": "u", # Damma
-      u"\u0650": "i", # kasra
-      u"\u0651": "~", # shaddah
-      u"\u0652": "o", # sukuun
-      u"\u0670": "`", # dagger 'alif
-      u"\u0671": "{", # waSla
-}
 
-def transString(string, reverse=0):
-    '''Given a Unicode string, transliterate into Buckwalter. To go from
-    Buckwalter back to Unicode, set reverse=1'''
-    silents = ["|", "&", "F", "N", "K", "a", "u", "i", "~", "o", "{"] #map these diacritical marks to empty string
 
-    string = string.replace("|", ".")
-    for k,v in arabic2english.items():
-        string = string.replace(k,v)
-    for letter in silents:
-        string = string.replace(letter, "")
 
-    return string
+
+
+
