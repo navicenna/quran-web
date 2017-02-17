@@ -69,7 +69,7 @@ def transString(string, reverse=0):
     Buckwalter back to Unicode, set reverse=1'''
     silents = ["|", "&", "F", "N", "K", "a", "u", "i", "~", "o", "{"] #map these diacritical marks to empty string
 
-    string = string.replace("|", ".") 
+    string = string.replace("|", ".")
     for k,v in arabic2english.items():
         string = string.replace(k,v)
     for letter in silents:
@@ -77,27 +77,23 @@ def transString(string, reverse=0):
 
     return string
 
-quran_dir = "C:/Users/Navid/Documents/Python Scripts/quran-text-analysis/" 
-quran_file = "quran-simple.txt"
-
-# with open( (quran_dir+quran_file), encoding="utf-8") as f:
-#     q = f.read()
-
-# s = transString(q, 0)
-
-# with open(quran_dir+"quran-transliterated.txt", "w") as f:
-#     f.write(s)
-
-with open(quran_dir+"quran-transliterated.txt", "r") as f:
-    lines = [l.rstrip('\n') for l in f.readlines()]
-
-# print(lines[0:10])
 
 def verse2dict(verse):
     rd = {}
-    rd["sura"] = re.match("\d{1,3}\.", verse).group(0)[0:-1]
-    rd["verse"] = re.search("\.\d{1,3}\.", verse).group(0)[1:-1]
-    rd["text"] = verse[re.search("\.\d{1,3}\.", verse).end(0):]
+    # print(verse)
+    # verse = unicode(verse)
+    verse = str(verse)
+    print(verse)
+    # print(sys.version)
+    # print(re.match("\d{1,3}\|", verse))
+    # print(re.match("\d{1,3}.*", verse))
+    # print(re.search("\d{1,3}.", verse))
+    # x = re.match("\d{1,3}.", verse)
+    # print(x)
+    # print(x.group(0))
+    rd["sura"] = re.search("\d{1,3}\|", verse).group(0)[0:-1]
+    rd["verse"] = re.search("\|\d{1,3}\|", verse).group(0)[1:-1]
+    rd["text"] = verse[re.search("\|\d{1,3}\|", verse).end(0):]
     return rd
 
 
@@ -108,7 +104,7 @@ def vdict2list(vdict):
     for letter in vdict["text"]:
         if letter != ' ':
             # print(letter)
-            temp = vdict 
+            temp = vdict
             temp["letter"] = letter
             # print(temp)
             rl.append(vdict.copy())
@@ -119,25 +115,3 @@ def quran2csvlines(quran):
     for line in quran:
         rl.extend(vdict2list(verse2dict(line)))
     return rl
-
-test = verse2dict(lines[0][0:10])
-# print(test)
-test = vdict2list(test)
-# print(test)
-test = quran2csvlines(lines)
-print(test[-2:])
-
-# WRITE FILE
-outfile = quran_dir+"quran-out.csv"
-
-with open(outfile, 'w', newline='') as csvfile:
-    fieldnames = ['sura', 'verse', 'text', 'letter']
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-    writer.writeheader()
-    writer.writerows(test)
-# print "TESTING CODE"
-# import re
-# p = re.compile("[a-z]")
-# for m in p.finditer('a1b2c3d4'):
-#     print m.start(), m.group()

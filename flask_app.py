@@ -5,7 +5,8 @@ from flask import Flask, redirect, render_template, request, url_for
 import logging
 from flask_debugtoolbar import DebugToolbarExtension
 from flask.ext.sqlalchemy import SQLAlchemy
-from funcs import init_tgv_dict, calc_val, transString, verse2dict
+from funcs import init_tgv_dict, calc_val, transString
+from funcs_process_quran_text import verse2dict
 
 app = Flask(__name__)
 app.debug = True
@@ -35,7 +36,7 @@ class Word(db.Model):
     content = db.Column(db.String(4096))
 
 
-class Quran(db.Model):
+class Verse(db.Model):
 
     __tablename__ = "q_tbl"
 
@@ -47,23 +48,29 @@ class Quran(db.Model):
 
 
 # Load Quran into table. First delete it, then add rows.
-n = Quran.query.delete()
+n = Verse.query.delete()
+db.session.commit()
 
 quran_file = "/home/navid/mysite/quran-simple.txt"
 
 testlines=[]
-with open(quran_file, "r") as f:
-    lines = [l.rstrip('\n') for l in f.readlines()]
+with open(quran_file, "r", encoding="utf-8") as f:
+    lines = [l.strip() for l in f.readlines()]
     for x in range(10):
         testlines.append(lines[x])
 
-for l in lines:
+for l in testlines:
+    # print(l)
     temp_verse = verse2dict(l)
+    print(temp_verse)
+    temp_verse = Verse(nSura=temp_verse["sura"],
+                      nVerse=temp_verse["verse"],
+                      verse=temp_verse["text"])
 
+    # db.session.add(temp_verse)
+    # db.session.commit()
 
-
-
-
+# testlines = Verse.query.limit(10).all()
 
 # Main web application function
 @app.route("/", methods=["GET", "POST"])
