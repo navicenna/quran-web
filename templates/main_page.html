@@ -47,13 +47,26 @@
             </form>
         </div>
 
-testing
-<br>
-{% print(t) %}
+<!--testing-->
 
-{% for x in t %}
-<li>{{x}}</li>
+<!--{% print(t) %}-->
+<br>
+Query verse from Quran:
+        <div class="row">
+            <form action="." method="POST">
+                <textarea class="form-control" name="contents" placeholder="Enter sura and verse in this format: [sura]:[verse] (e.g. 1:1)"></textarea>
+                <input type="submit" name="submit" value="Get verse">
+            </form>
+        </div>
+
+<br>
+{% for x in verses %}
+    <div class="row">
+        Sura: {{x[nSura]}}, Verse: {{x[nVerse]}}, <br>
+        Text: {{ x[verse] }}
+    </div>
 {% endfor %}
+
 </div><!-- /.container -->
 
     </body>

@@ -83,7 +83,7 @@ def verse2dict(verse):
     # print(verse)
     # verse = unicode(verse)
     verse = str(verse)
-    print(verse)
+    # print(verse)
     # print(sys.version)
     # print(re.match("\d{1,3}\|", verse))
     # print(re.match("\d{1,3}.*", verse))
