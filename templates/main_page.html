@@ -62,8 +62,8 @@ Query verse from Quran:
 <br>
 {% for x in verses %}
     <div class="row">
-        Sura: {{x[nSura]}}, Verse: {{x[nVerse]}}, <br>
-        Text: {{ x[verse] }}
+        Sura: {{x.nSura}}, Verse: {{x.nVerse}}, <br>
+        Text: {{ x.verse }}
     </div>
 {% endfor %}
 
