@@ -91,9 +91,10 @@ def verse2dict(verse):
     # x = re.match("\d{1,3}.", verse)
     # print(x)
     # print(x.group(0))
-    rd["sura"] = re.search("\d{1,3}\|", verse).group(0)[0:-1]
-    rd["verse"] = re.search("\|\d{1,3}\|", verse).group(0)[1:-1]
-    rd["text"] = verse[re.search("\|\d{1,3}\|", verse).end(0):]
+    rd["nSura"] = re.search("\d{1,3}\|", verse).group(0)[0:-1]
+    rd["nVerse"] = re.search("\|\d{1,3}\|", verse).group(0)[1:-1]
+    rd["ar"] = verse.split("|")[2]
+    rd["eng"] = verse.split("|")[3]
     return rd
 
 
@@ -115,3 +116,12 @@ def quran2csvlines(quran):
     for line in quran:
         rl.extend(vdict2list(verse2dict(line)))
     return rl
+
+
+
+test = "1|1|بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ|In the name of God, Most Gracious, Most Merciful.*"
+t = test.split("|")[3]
+
+t = verse2dict(test)
+print(t)
+

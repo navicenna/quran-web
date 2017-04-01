@@ -45,7 +45,8 @@ class Verse(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nSura = db.Column(db.Integer)
     nVerse = db.Column(db.Integer)
-    verse = db.Column(db.String(4096))
+    ar = db.Column(db.String(4096))
+    eng = db.Column(db.String(4096))
 
 # Variables to determine whether the raw Quran input should be loaded upon running
 #   the script, and if it should be loaded, just a test portion or the whole Quran
@@ -77,9 +78,11 @@ if quran_load:
         # print(l)
         temp_verse = verse2dict(l)
         # print(temp_verse)
-        temp_verse = Verse(nSura=temp_verse["sura"],
-                          nVerse=temp_verse["verse"],
-                          verse=temp_verse["text"])
+        temp_verse = Verse(nSura=temp_verse["nSura"],
+                          nVerse=temp_verse["nVerse"],
+                          ar=temp_verse["ar"],
+                          eng=temp_verse["eng"]
+                          )
 
         db.session.add(temp_verse)
     db.session.commit()
