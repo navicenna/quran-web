@@ -5,6 +5,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1.5px solid #111aaa;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dea;
+            }
+        </style>
+
         <title>Quran Analysis Project</title>
     </head>
 
@@ -47,7 +65,7 @@
             </form>
         </div>
 
-<!--testing-->
+<!--Verse query-->
 
 <!--{% print(t) %}-->
 <br>
@@ -60,12 +78,24 @@ Query verse from Quran:
         </div>
 
 <br>
+
+<table>
+    <tr>
+        <th>Sura #</th>
+        <th>Verse #</th>
+        <th>Arabic</th>
+        <th>English</th>
+    </tr>
 {% for x in verses %}
-    <div class="row">
-        Sura: {{x.nSura}}, Verse: {{x.nVerse}}, <br>
-        Text: {{ x.verse }}
-    </div>
+    <tr>
+        <td>{{x.nSura}}</td>
+        <td>{{x.nVerse}}</td>
+        <td>{{ x.ar }}</td>
+        <td>{{ x.eng }}</td>
+    </tr>
 {% endfor %}
+</table>
+
 
 </div><!-- /.container -->
 

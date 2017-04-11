@@ -144,10 +144,10 @@ def query_verses(req, db):
     endVerse = req[3]
 
     if begSura==endSura:
-        textual = text("select nSura, nVerse, verse from q_tbl where nSura = :x1 and nVerse >= :x2 and nVerse <= :x4 ")
+        textual = text("select nSura, nVerse, ar, eng from q_tbl where nSura = :x1 and nVerse >= :x2 and nVerse <= :x4 ")
         rv = db.session.execute(textual, {"x1": begSura, "x2": begVerse, "x4": endVerse}).fetchall()
     else:
-        textual = text("select nSura, nVerse, verse from q_tbl where (nSura = :x1 and nVerse >= :x2)" +
+        textual = text("select nSura, nVerse, ar, eng from q_tbl where (nSura = :x1 and nVerse >= :x2)" +
         " or (nSura > :x1 and nSura < :x3) or (nSura = :x3 and nVerse <= :x4)")
         rv = db.session.execute(textual, {"x1": begSura, "x2": begVerse, "x3": endSura, "x4": endVerse}).fetchall()
 
@@ -162,7 +162,8 @@ def load_query_into_dict(queried_verses):
         di = d.copy()
         di["nSura"] = v[0]
         di["nVerse"] = v[1]
-        di["verse"] = v[2]
+        di["ar"] = v[2]
+        di["eng"] = v[3]
         rv.append(di.copy())
 
     return rv
