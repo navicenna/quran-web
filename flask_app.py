@@ -47,11 +47,12 @@ class Verse(db.Model):
     nVerse = db.Column(db.Integer)
     ar = db.Column(db.String(4096))
     eng = db.Column(db.String(4096))
+    translit = db.Column(db.String(4096)) #English transliteration
 
 # Variables to determine whether the raw Quran input should be loaded upon running
 #   the script, and if it should be loaded, just a test portion or the whole Quran
-quran_load = True
-quran_test = True
+quran_load = False
+quran_test = False
 
 # Load Quran into table. First delete it, then add rows.
 
@@ -81,7 +82,8 @@ if quran_load:
         temp_verse = Verse(nSura=temp_verse["nSura"],
                           nVerse=temp_verse["nVerse"],
                           ar=temp_verse["ar"],
-                          eng=temp_verse["eng"]
+                          eng=temp_verse["eng"],
+                          translit=temp_verse["translit"]
                           )
 
         db.session.add(temp_verse)
@@ -116,9 +118,10 @@ def index():
             db.session.commit()
         elif execute_this == "Get verse":
             req = request.form["contents"].strip()
-            if not re.match("\d+\D+\d+\D*",req):
-                pass
-            verse_obj = query_verses(req, db)
+            if re.match("\d+\D+\d+\D*",req):
+                verse_obj = query_verses_number(req, db)
+            else:
+                verse_obj = query_verses_text(req, db)
         return redirect(url_for('index'))
 
 
@@ -131,8 +134,8 @@ def wibble():
 
 
 
-# process request to query
-def query_verses(req, db):
+# process request to query certain verse numbers
+def query_verses_number(req, db):
     req = re.split("\D+", req)
     print(req)
     if len(req) < 3:
@@ -154,6 +157,21 @@ def query_verses(req, db):
     return load_query_into_dict(rv)
 
 
+# process request to run word search on verses
+def query_verses_text(req, db):
+    eng_search = '%' + req.strip() + '%'
+    ar_search = '%' + transString(req.strip()) + '%'
+    print(req)
+
+    textual = text("select nSura, nVerse, ar, eng from q_tbl" +
+                   "where eng like :x1 or translit like :x2")
+    rv = db.session.execute(textual, {"x1": eng_search, "x2": ar_search}).fetchall()
+
+    return load_query_into_dict(rv)
+
+
+
+# Load query result into a dictionary for easy processing by flask HTML processor
 def load_query_into_dict(queried_verses):
     rv = []
     d = {}

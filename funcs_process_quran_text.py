@@ -69,7 +69,7 @@ def transString(string, reverse=0):
     Buckwalter back to Unicode, set reverse=1'''
     silents = ["|", "&", "F", "N", "K", "a", "u", "i", "~", "o", "{"] #map these diacritical marks to empty string
 
-    string = string.replace("|", ".")
+    # string = string.replace("|", ".")
     for k,v in arabic2english.items():
         string = string.replace(k,v)
     for letter in silents:
@@ -95,6 +95,7 @@ def verse2dict(verse):
     rd["nVerse"] = re.search("\|\d{1,3}\|", verse).group(0)[1:-1]
     rd["ar"] = verse.split("|")[2]
     rd["eng"] = verse.split("|")[3]
+    rd["translit"] = transString(rd["ar"])
     return rd
 
 
