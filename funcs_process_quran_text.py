@@ -106,3 +106,43 @@ def verse2dict(verse):
 #     for line in quran:
 #         rl.extend(vdict2list(verse2dict(line)))
 #     return rl
+
+
+# Given a Quran dictionary and a verse, add the verse into the dictionary
+def scrape_verse(quran_dict, verse):
+  sura, verse, arabic, english = verse.split("|")
+  # try:
+  sura, verse = int(sura), int(verse)
+  # except:
+  #   print(sura, verse)
+
+  if sura not in quran_dict.keys():
+    quran_dict[sura] = {}
+
+  quran_dict[sura][verse] = {}
+  quran_dict[sura][verse]["arabic"] = arabic
+  quran_dict[sura][verse]["english"] = english
+
+  return
+
+
+# Open the text file of Quran and scrape it into a nested dictionary
+# data structure
+# 
+# Returns: dictionary
+def scrape_quran_into_dict(quran_file):
+  with open(quran_file, "r", encoding="utf-8") as f:
+    lines = f.readlines()
+
+    rv = {}
+    for l in lines[0:4]:
+      scrape_verse(rv, l)
+
+    return rv
+
+
+# TESTING
+f = "eng_quran_out.txt"
+d = scrape_quran_into_dict(f)
+print(d)
+# 
