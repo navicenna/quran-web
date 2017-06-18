@@ -69,10 +69,10 @@
 
 <!--{% print(t) %}-->
 <br>
-Query verse from Quran:
+Query verse from Quran, either by verse and number, or by English or Arabic content:
         <div class="row">
             <form action="." method="POST">
-                <textarea class="form-control" name="contents" placeholder="Enter sura and verse in this format: [sura]:[verse] (e.g. 1:1)"></textarea>
+                <textarea class="form-control" name="contents" placeholder="Enter sura and verse in this format: [sura]:[verse] (e.g. 1:1). Or enter English or Arabic search text."></textarea>
                 <input type="submit" name="submit" value="Get verse">
             </form>
         </div>
@@ -89,13 +89,13 @@ Query verse from Quran:
 {% for x in verses %}
     <tr>
         <td>{{x.nSura}}</td>
-        <td>{{x.nVerse}}</td>
+        <td><a href="http://masjidtucson.org/quran/frames/ch{{x.nSura}}.html#{{x.nVerse}}" target="_blank"> {{x.nVerse}} </a></td>
         <td>{{ x.ar }}</td>
         <td>{{ x.eng }}</td>
     </tr>
 {% endfor %}
 </table>
-
+<br><br>
 
 </div><!-- /.container -->
 

@@ -1,12 +1,14 @@
 # This Python file uses the following encoding: utf-8
-# Test commit
 
-import os, sys, re, csv
+import re
 
+
+
+# A dictionary that maps every possible Arabic letter to an English transliteration
 arabic2english = {
       u"\u0621": "'", # hamza-on-the-line
       u"\u0622": "|", # madda
-      u"\u0623": ">", # hamza-on-'alif
+      u"\u0623": "A", # hamza-on-'alif
       u"\u0624": "&", # hamza-on-waaw, treat as waaw for now
       u"\u0625": "<", # hamza-under-'alif
       u"\u0626": "}", # hamza-on-yaa'
@@ -53,20 +55,11 @@ arabic2english = {
       u"\u0671": "{", # waSla
 }
 
-# For a reverse transliteration (Unicode -> Buckwalter), a dictionary
-# which is the reverse of the above buck2uni is essential.
 
-# uni2buck = {}
 
-# # Iterate through all the items in the buck2uni dict.
-# for (key, value) in buck2uni.iteritems():
-#       # The value from buck2uni becomes a key in uni2buck, and vice
-#       # versa for the keys.
-#       uni2buck[value] = key
+def transString(string):
+    '''Given a Unicode string, transliterate into Buckwalter'''
 
-def transString(string, reverse=0):
-    '''Given a Unicode string, transliterate into Buckwalter. To go from
-    Buckwalter back to Unicode, set reverse=1'''
     silents = ["|", "&", "F", "N", "K", "a", "u", "i", "~", "o", "{"] #map these diacritical marks to empty string
 
     # string = string.replace("|", ".")
@@ -78,51 +71,38 @@ def transString(string, reverse=0):
     return string
 
 
+
 def verse2dict(verse):
+    '''function used to read in Arabic Quran text. Use regular expression
+    pattern matching to extract sura and verse number, and Arabic and English text
+    from Quran text file'''
+
     rd = {}
-    # print(verse)
-    # verse = unicode(verse)
-    verse = str(verse)
-    # print(verse)
-    # print(sys.version)
-    # print(re.match("\d{1,3}\|", verse))
-    # print(re.match("\d{1,3}.*", verse))
-    # print(re.search("\d{1,3}.", verse))
-    # x = re.match("\d{1,3}.", verse)
-    # print(x)
-    # print(x.group(0))
     rd["nSura"] = re.search("\d{1,3}\|", verse).group(0)[0:-1]
     rd["nVerse"] = re.search("\|\d{1,3}\|", verse).group(0)[1:-1]
     rd["ar"] = verse.split("|")[2]
     rd["eng"] = verse.split("|")[3]
     rd["translit"] = transString(rd["ar"])
+
     return rd
 
 
 
+# The following code is not used. Delete after confirming (Navid - 5/4/2017 05:22:33)
+# def vdict2list(vdict):
+#     ''''''
+#     rl=[]
+#     for letter in vdict["text"]:
+#         if letter != ' ':
+#             # print(letter)
+#             temp = vdict
+#             temp["letter"] = letter
+#             # print(temp)
+#             rl.append(vdict.copy())
+#     return rl
 
-def vdict2list(vdict):
-    rl=[]
-    for letter in vdict["text"]:
-        if letter != ' ':
-            # print(letter)
-            temp = vdict
-            temp["letter"] = letter
-            # print(temp)
-            rl.append(vdict.copy())
-    return rl
-
-def quran2csvlines(quran):
-    rl = []
-    for line in quran:
-        rl.extend(vdict2list(verse2dict(line)))
-    return rl
-
-
-
-test = "1|1|بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ|In the name of God, Most Gracious, Most Merciful.*"
-t = test.split("|")[3]
-
-t = verse2dict(test)
-print(t)
-
+# def quran2csvlines(quran):
+#     rl = []
+#     for line in quran:
+#         rl.extend(vdict2list(verse2dict(line)))
+#     return rl

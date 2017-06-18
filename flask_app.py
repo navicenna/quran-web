@@ -6,7 +6,7 @@ import logging
 import re
 from flask_debugtoolbar import DebugToolbarExtension
 from flask.ext.sqlalchemy import SQLAlchemy
-from funcs import init_tgv_dict, calc_val, transString
+from funcs import init_tgv_dict, calc_val, transString, detect_arabic
 from funcs_process_quran_text import verse2dict
 from sqlalchemy import text
 
@@ -131,6 +131,9 @@ def wibble():
     return 'test'
 
 
+@app.route('/example_arabic_lesson')
+def display():
+    return render_template("example_arabic_lesson.html")
 
 
 
@@ -159,13 +162,22 @@ def query_verses_number(req, db):
 
 # process request to run word search on verses
 def query_verses_text(req, db):
-    eng_search = '%' + req.strip() + '%'
-    ar_search = '%' + transString(req.strip()) + '%'
-    print(req)
+    if req=="":
+        return [{}]
+    req=req.strip()
 
-    textual = text("select nSura, nVerse, ar, eng from q_tbl" +
-                   "where eng like :x1 or translit like :x2")
-    rv = db.session.execute(textual, {"x1": eng_search, "x2": ar_search}).fetchall()
+    if detect_arabic(req):
+        search = '%' + transString(req) + '%'
+        textual = text("select nSura, nVerse, ar, eng, translit from q_tbl " +
+                       "where translit like :x1")
+    else:
+        search = '%' + req + '%'
+        textual = text("select nSura, nVerse, ar, eng, translit from q_tbl " +
+                       "where eng like :x1")
+
+    print("req is: ", req)
+    print("search is: ", search)
+    rv = db.session.execute(textual, {"x1": search}).fetchall()
 
     return load_query_into_dict(rv)
 
@@ -182,14 +194,19 @@ def load_query_into_dict(queried_verses):
         di["nVerse"] = v[1]
         di["ar"] = v[2]
         di["eng"] = v[3]
+        try:
+            di["translit"] = v[4]
+        except:
+            pass
         rv.append(di.copy())
-
     return rv
 
 
-# def search_word()
 
-
+# Count number of letters in a verse; based on English transliteration
+def count_letter(verse, letter):
+    only_letters = [l for l in verse if l==letter]
+    return len(only_letters)
 
 
 

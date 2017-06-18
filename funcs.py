@@ -131,3 +131,10 @@ def calc_val(word, type_v):
             pass
 
     return  rv
+
+# Detect Arabic language
+def detect_arabic(string):
+    for letter in arabic2english:
+        if letter in string:
+            return True
+    return False
