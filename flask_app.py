@@ -7,7 +7,7 @@ import re
 from flask_debugtoolbar import DebugToolbarExtension
 from flask.ext.sqlalchemy import SQLAlchemy
 from funcs import init_tgv_dict, calc_val, transString, detect_arabic
-from funcs_process_quran_text import verse2dict
+from funcs_process_quran_text import *
 from sqlalchemy import text
 
 app = Flask(__name__)

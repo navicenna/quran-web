@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <html>
- 
+
 <head>
  <meta charset="UTF-8">
  <title>CSS test</title>
@@ -22,7 +22,8 @@
 
 body {
 
-background-color: #F5F5DC
+background-color: rgba(245, 245, 220, 1)
+-webkit-font-smoothing: antialiased;
 
 
 }
@@ -31,17 +32,17 @@ background-color: #F5F5DC
  padding: 10;
  margin: 10;
  list-style: none;
- 
+
 /* display: -webkit-box;
  display: -moz-box;
  display: -ms-flexbox;
  display: -webkit-flex;
 */ display: flex;
-
+opacity: 1;
 
  flex-direction: column;
  flex-wrap: no-wrap;
- 
+
  /*-webkit-flex-flow: row wrap;*/
  justify-content: space-between;
  /*align-items: flex-start;*/
@@ -50,13 +51,14 @@ background-color: #F5F5DC
 
 
 .flex-item {
- background: tomato;
+ background: rgba(183, 260, 188, 0.80);
  padding: 10px;
  /*width: 200px;*/
  /*height: 150px;*/
- margin-top: 10px;
+ margin-top: 5px;
  border-radius: 10px;
- 
+opacity: 1;
+
  /*flex-basis: 50px;*/
  /*height: 150px;*/
  /*min-width: 50px;*/
@@ -64,14 +66,15 @@ background-color: #F5F5DC
 
 
  /*line-height: 150px;*/
- color: white;
+ color: black;
 
 
- font-weight: bold;
- font-size: 1.5em;
+ /*font-weight: bold;*/
+ font-size: 1.3em;
  text-align: left;
  /*flex-shrink: 1;*/
- flex-grow: 100;
+ flex-grow: 50;
+ box-shadow: 1px 1px 1px #a8a8a8;
 }
 
 
@@ -101,6 +104,7 @@ background-color: #F5F5DC
 
 <li class="flex-item">Tell me when you start on first slide</li>
 <li class="flex-item">So i can give you exercises for it</li>
+<li class="flex-item">So i can give you exercises for it test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test </li>
 <li class="flex-item">And you also need to print one of these to help you understand how the shake change slightly with place in Word</li>
 <li class="flex-item">But not that difficult you will figure it out</li>
 <li class="flex-item">The slides i sent so help you memorize quickly i hope</li>
@@ -164,10 +168,10 @@ background-color: #F5F5DC
 
 
 
-<!-- 
+<!--
  <li class="flex-item">1</li>
- <li class="flex-item">2.1 abc abc abc abcabcabc abc abc abc abc abc abc 
- 2.2 abc abc abc abcabcabc abc abc abc abc abc abc 
+ <li class="flex-item">2.1 abc abc abc abcabcabc abc abc abc abc abc abc
+ 2.2 abc abc abc abcabcabc abc abc abc abc abc abc
  2.3 abc abc abc abcabcabc abc abc abc abc abc abc
  2.4 abc abc abc abcabcabc abc abc abc abc abc abc
  2.5 abc abc abc abcabcabc abc abc abc abc abc abc</li>
@@ -175,7 +179,7 @@ background-color: #F5F5DC
  <li class="flex-item">4</li>
  <li class="flex-item">5</li>
  <li class="flex-item">6</li>
-</ul> 
+</ul>
 
 
 
