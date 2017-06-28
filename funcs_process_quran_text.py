@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
 
 import re
-
+from pprint import pprint
 
 
 # A dictionary that maps every possible Arabic letter to an English transliteration
@@ -60,7 +60,7 @@ arabic2english = {
 def transString(string):
     '''Given a Unicode string, transliterate into Buckwalter'''
 
-    silents = ["|", "&", "F", "N", "K", "a", "u", "i", "~", "o", "{"] #map these diacritical marks to empty string
+    silents = ["|", "F", "N", "K", "a", "u", "i", "~", "o", "{"] #map these diacritical marks to empty string
 
     # string = string.replace("|", ".")
     for k,v in arabic2english.items():
@@ -88,21 +88,70 @@ def verse2dict(verse):
 
 
 
-# The following code is not used. Delete after confirming (Navid - 5/4/2017 05:22:33)
-# def vdict2list(vdict):
-#     ''''''
-#     rl=[]
-#     for letter in vdict["text"]:
-#         if letter != ' ':
-#             # print(letter)
-#             temp = vdict
-#             temp["letter"] = letter
-#             # print(temp)
-#             rl.append(vdict.copy())
-#     return rl
+# Given a Quran dictionary and a line of text from the Quran infile, add the verse into the dictionary
+def scrape_verse(quran_dict, verse_text):
+  sura, verse, arabic, english = verse_text.strip().split("|")
+  try:
+    sura = int(sura)
+    verse = int(verse)
+  except:
+    print(verse_text)
+    print([sura,verse])
 
-# def quran2csvlines(quran):
-#     rl = []
-#     for line in quran:
-#         rl.extend(vdict2list(verse2dict(line)))
-#     return rl
+  if sura not in quran_dict.keys():
+    quran_dict[sura] = {}
+
+  quran_dict[sura][verse] = {}
+  quran_dict[sura][verse]["arabic"] = arabic
+  quran_dict[sura][verse]["english"] = english
+
+  return
+
+
+# Open the text file of Quran and scrape it into a nested dictionary
+# data structure
+# 
+# Returns: dictionary
+def scrape_quran_into_dict(quran_file):
+  with open(quran_file, "r", encoding="utf-8-sig") as f:
+    lines = f.readlines()
+
+    rv = {}
+    for l in lines:
+      scrape_verse(rv, l)
+
+    return rv
+
+
+# alif_count_verse: given Quran dictionary and a sura and verse number,
+#                   count the number of alifs in the verse
+# 
+# Returns: integer
+def alif_count_verse(quran_dict, sura, verse):
+  trans = transString(quran_dict[sura][verse]["arabic"])
+  print(sura, verse, trans)
+  return sum( [1 for letter in trans if letter=="A"] )
+
+
+# alif_count_sura: given Quran dictionary and a sura number,
+#                   count the number of alifs in the sura
+# 
+# Returns: integer
+def alif_count_sura(quran_dict, sura):
+  total = 0
+  # pprint( quran_dict[sura].keys())
+  for verse in quran_dict[sura].keys():
+    total += alif_count_verse(quran_dict, sura, verse)
+  return total
+
+# TESTING
+f = "eng_quran_out.txt"
+d = scrape_quran_into_dict(f)
+# print(d[1])
+# pprint.pprint(d)
+
+
+# c = alif_count_verse(d, 1, 1)
+total = alif_count_sura(d, 1)
+print(total)
+# pprint(d[1])
