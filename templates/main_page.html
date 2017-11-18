@@ -21,12 +21,52 @@
             tr:nth-child(even) {
                 background-color: #dea;
             }
+
+            span.highlight{
+                background:#f7e06c;
+                padding:2.5px;
+                // display:inline-block;
+                // color:#f7e06c;
+                opacity:0.65;
+                border-radius:3px;
+                font-weight:normal;
+                font-size:107%
+            }
+
+            p{
+                font-family:Verdana;
+            }
+
+            #alif {
+                font-size:170%
+            }
         </style>
 
         <title>Quran Analysis Project</title>
     </head>
 
     <body>
+
+
+<!-- Include JQuery to highlight alif's -->
+<script src="/static/jquery-3.2.1.min.js"></script>
+
+<script>
+
+    // window.onload = function() {
+    // if (window.jQuery) {
+    //     // jQuery is loaded
+    //     alert("jquery is working!");
+    // } else {
+    //     // jQuery is not loaded
+    //     alert("jquery not working");
+    // }
+    // }
+
+
+</script>
+
+
 
 
 <nav class="navbar navbar-inverse">
@@ -56,6 +96,32 @@
             <form action="." method="POST">
                 <textarea class="form-control" name="contents" placeholder="Enter an Arabic word or phrase"></textarea>
                 <input type="submit" name="submit" value="Calculate TGV">
+            </form>
+        </div>
+
+        <div class="row">
+            <form action="." method="POST">
+                <input type="submit" name="submit"  value="Clear">
+            </form>
+        </div>
+
+<!--Count alif in verse-->
+<h2>Alif count of verse or whole sura</h2>
+<br>
+
+    <div class="row">
+        Alif count = {{ alif_count.count }} <br>
+        Verse =
+        <p id="alif">
+            {{ alif_count.verse }}
+        </p>
+    </div>
+
+
+        <div class="row">
+            <form action="." method="POST">
+                <textarea class="form-control" name="contents" placeholder="Enter sura and verse numbers"></textarea>
+                <input type="submit" name="submit" value="Count alif">
             </form>
         </div>
 
@@ -97,7 +163,43 @@ Query verse from Quran, either by verse and number, or by English or Arabic cont
 </table>
 <br><br>
 
+
+<br><br><br><br><br><br><br>
+<hr>
+<h1>testing area</h1>
+<p id="alif">
+
+<br>آ
+<br>ا
+<br>بابا
+
+apple
+
+<br>بابا
+
+</p>
+
+
+
 </div><!-- /.container -->
+
+
+<script type="text/javascript">
+    jQuery.fn.highlight = function (str, className) {
+    var regex = new RegExp(str, "gi");
+
+    return this.each(function () {
+        this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
+        });
+    };
+
+    // $("p#test").highlight("z","highlight");
+    $("#alif").highlight("ا","highlight");
+    // $("#alif").highlight("a","highlight");
+    // $("p").highlight("a","highlight");
+</script>
+
+
 
     </body>
 </html>
