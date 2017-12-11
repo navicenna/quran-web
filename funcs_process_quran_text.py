@@ -199,8 +199,8 @@ def fetch_trans_dict():
     letters = [
       [
       (u"\u0627", "A"), # bare 'alif
-      (u"\u0670", "`"), # dagger 'alif
-      (u"\u0671", "{"), # waSla
+    #   (u"\u0670", "`"), # dagger 'alif
+    #   (u"\u0671", "{"), # waSla
       (u"\u0621", "'"), # hamza-on-the-line
       (u"\u0622", "|") # madda
       ],
@@ -257,6 +257,19 @@ def fetch_trans_dict():
       ],
     ]
     return letters
+
+
+
+# Fetch and return the sura numbers
+def fetch_sura_numbers():
+    numbers= [list(range(1,  20) ),
+              list(range(20, 39) ),
+              list(range(39, 58) ),
+              list(range(58, 77) ),
+              list(range(77, 96) ),
+              list(range(96, 115) ),
+             ]
+    return numbers
 
 
 

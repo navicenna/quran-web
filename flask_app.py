@@ -172,7 +172,8 @@ def dashboard():
                     "<br>Total TGV of selected letters in Quran: " + str(tgv))
         return redirect(url_for('dashboard'))
     else:
-        return render_template("dashboard.html", letters=fetch_trans_dict(), result=result)
+        return render_template("dashboard.html", letters=fetch_trans_dict(),
+                                result=result, sura_numbers=fetch_sura_numbers())
 
 
 
