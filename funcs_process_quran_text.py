@@ -133,7 +133,7 @@ def alif_count_verse(quran_dict, sura, verse, assumptions):
   mod = "strong"
   try:
     trans = transString(quran_dict[sura][verse]["arabic"])
-    print(sura, verse, trans)
+    # print(sura, verse, trans)
     total = sum( [1 for letter in trans if letter in assumptions] )
     letters = "".join([letter for letter in trans if letter in assumptions])
     return {"verse": Markup(quran_dict[sura][verse]["arabic"].replace("ا",  "<" + mod + ">ا</" + mod + ">"   )),
@@ -170,18 +170,19 @@ def alif_count_sura(quran_dict, sura, assumptions):
 
 
 # alif_count_sura: given Quran dictionary and a sura number,
-#                   count the number of alifs in the sura
+#                   count the number of alifs in the selected suras
 #
 # Returns: integer
-def alif_count_quran(quran_dict, assumptions):
+def alif_count_quran(quran_dict, assumptions, sura_selection):
     total, tgv = 0, 0
     # pprint( quran_dict[sura].keys())
     try:
         for sura in quran_dict.keys():
-            for verse in quran_dict[sura].keys():
-                verse_values = alif_count_verse(quran_dict, sura, verse, assumptions)
-                total += verse_values["count"]
-                tgv += verse_values["tgv"]
+            if sura in sura_selection:
+                for verse in quran_dict[sura].keys():
+                    verse_values = alif_count_verse(quran_dict, sura, verse, assumptions)
+                    total += verse_values["count"]
+                    tgv += verse_values["tgv"]
             # rv = total
         rv = {"verse": Markup("Alif count in sura " + str(sura) + " = <b>" + str(total) + "</b>"),
               "count": total,

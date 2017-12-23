@@ -164,12 +164,14 @@ def dashboard():
     # result = "test result"
     if request.method == "POST":
         letters_selected = request.form.getlist('letter')
-        print(letters_selected)
-        sura_values = alif_count_quran(quran_dict, letters_selected)
+        suras_selected = request.form.getlist('sura')
+        suras_selected = [int(x) for x in suras_selected]
+        print(suras_selected)
+        sura_values = alif_count_quran(quran_dict, letters_selected, suras_selected)
         letter_count = sura_values["count"]
         tgv = sura_values["tgv"]
-        result = Markup("Count of selected letters in Quran: " + str(letter_count) +
-                    "<br>Total TGV of selected letters in Quran: " + str(tgv))
+        result = Markup("Count of selected letters in selected suras: " + str(letter_count) +
+                    "<br>Total TGV of selected letters in selected suras: " + str(tgv))
         return redirect(url_for('dashboard'))
     else:
         return render_template("dashboard.html", letters=fetch_trans_dict(),
