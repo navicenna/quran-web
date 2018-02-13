@@ -14,12 +14,18 @@ d[2][1] = {"ar": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّ�
 d[2][2] = {"ar": "ذَلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ هُدًى لِلْمُتَّقِينَ"}
 d[2][3] = {"ar": "الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنْفِقُونَ"}
 
+
+
 from pprint import pprint
+from funcs_process_quran_text import *
 import nltk
+
+quran_file = "/home/navid/mysite/eng_quran_out.txt"
+quran_dict = scrape_quran_into_dict(quran_file)
 
 # pprint(d)
 
-import nltk
+
 
 
 def tgv(gram):
@@ -39,14 +45,14 @@ def get_ngrams_sura(sura_nbr, sura):
     all_words = []
     for verse_nbr in sura:
         all_words.extend(get_ngrams_verse(
-            sura_nbr, verse_nbr, sura[verse_nbr]["ar"]))
+            sura_nbr, verse_nbr, sura[verse_nbr]["arabic"]))
     return all_words
 
 
-def get_ngrams_quran():
+def get_ngrams_quran(quran_dict):
     all_words = []
     for sura_nbr in d:
-        all_words.extend(get_ngrams_sura(sura_nbr, d[sura_nbr]))
+        all_words.extend(get_ngrams_sura(sura_nbr, quran_dict[sura_nbr]))
     return list(sorted(all_words, key=lambda x: x["gram"]))
 
 
@@ -66,11 +72,14 @@ def build_tgv_dict(all_words):
     return tgv_dict
 
 
-# test = get_ngrams_verse(d[1][1]["ar"])
-# test = get_ngrams_sura(1, d[1])
-test = get_ngrams_quran()
-test_next = build_tgv_dict(test)
+if __name__ == "__main__":
+    # test = get_ngrams_verse(1, 1, quran_dict[1][1]["arabic"])
+    # test = get_ngrams_sura(1, d[1])
+    test = get_ngrams_quran(quran_dict)
+    test_next = build_tgv_dict(test)
 
-pprint(test_next)
-# pprint(type(test))
-# x = sorted(test, key=lambda x: x['tgv'])
+
+    # pprint(test)
+    pprint(test_next)
+    # pprint(type(test))
+    # x = sorted(test, key=lambda x: x['tgv'])

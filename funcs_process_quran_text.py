@@ -3,7 +3,8 @@
 import re
 from pprint import pprint
 from flask import Markup
-from funcs import calc_val
+from funcs import calc_val, transString
+import nltk
 
 # A dictionary that maps every possible Arabic letter to an English transliteration
 arabic2english = {
@@ -271,6 +272,51 @@ def fetch_sura_numbers():
               list(range(96, 115) ),
              ]
     return numbers
+
+
+# Functions to build the TGV dictionary
+def get_ngrams_verse(sura_nbr, verse_nbr, verse):
+    words = nltk.word_tokenize(verse)
+    my_bigrams = [' '.join(x) for x in nltk.bigrams(words)]
+    my_trigrams = [' '.join(x) for x in nltk.trigrams(words)]
+    all_grams = words + my_bigrams + my_trigrams
+    return [{"gram": w, "tgv": calc_val(transString(w), type_v="tgv"), "sura_nbr": sura_nbr, "verse_nbr": verse_nbr}
+            for w in all_grams]
+
+
+def get_ngrams_sura(sura_nbr, sura):
+    all_words = []
+    for verse_nbr in sura:
+        all_words.extend(get_ngrams_verse(
+            sura_nbr, verse_nbr, sura[verse_nbr]["arabic"]))
+    return all_words
+
+
+def get_ngrams_quran(quran_dict):
+    all_words = []
+    for sura_nbr in quran_dict:
+        all_words.extend(get_ngrams_sura(sura_nbr, quran_dict[sura_nbr]))
+    return list(sorted(all_words, key=lambda x: x["gram"]))
+
+
+def build_tgv_dict(all_words):
+    tgv_dict = {}
+    max_value = max(all_words, key=lambda x: x['tgv'])['tgv']
+    print("calculated max TGV: it is ", max_value)
+    for i in range(1, max_value+1):
+    # for i in range(1, 119):
+        tgv_dict[i] = [x.copy() for x in all_words if x['tgv'] == i]
+    print("created tgv_dict phase 1...")
+    for tgv_key in list(tgv_dict):
+        if len(tgv_dict[tgv_key]) == 0 :
+            del tgv_dict[tgv_key]
+        else:
+            for gram in tgv_dict[tgv_key]:
+                del gram['tgv']
+    print("created tgv_dict phase 2...now same as phase 1")
+
+    return tgv_dict
+
 
 
 

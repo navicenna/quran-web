@@ -1,0 +1,157 @@
+<html>
+  <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!--                        BEGIN CSS                        -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <style>
+            /*table {*/
+            /*    font-family: arial, sans-serif;*/
+            /*    border-collapse: collapse;*/
+            /*    width: 100%;*/
+            /*}*/
+
+            td, th {
+                /*border: 1.5px solid #111aaa;*/
+                text-align: left;
+                padding: 8px;
+                /*white-space: nowrap;*/
+            }
+
+            /*tr:nth-child(even) {*/
+            /*    background-color: #dea;*/
+            /*}*/
+
+            span.highlight{
+                background:#f7e06c;
+                padding:2.5px;
+                // display:inline-block;
+                // color:#f7e06c;
+                opacity:0.65;
+                border-radius:3px;
+                font-weight:normal;
+                font-size:107%
+            }
+
+            p{
+                /*font-family:Verdana;*/
+            }
+
+            #alif {
+                font-size:170%
+            }
+        </style>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!--                          END CSS                        -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+        <title>Quran Analysis Project</title>
+    </head>
+
+    <body>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                          BEGIN Header                   -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Quran Analysis Project</a>
+    </div>
+  </div>
+</nav>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                          END  Header                    -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+
+<div class="container">
+<h1>TGV Calculator</h1>
+<br>
+
+{% for comment in comments %}
+    <div class="row">
+        {{ comment.content }}
+    </div>
+{% endfor %}
+
+        <div class="row">
+            <form action="" method="POST">
+                <textarea class="form-control" name="contents" placeholder="Enter an Arabic word or phrase"></textarea>
+                <input type="submit" name="submit" value="Calculate TGV">
+            </form>
+        </div>
+
+        <div class="row">
+            <form action="" method="POST">
+                <input type="submit" name="submit"  value="Clear">
+            </form>
+        </div>
+
+<!-- </table> -->
+<br><br>
+
+
+<br><br>
+<hr>
+
+<h1>TGV matching algorithm</h1>
+
+        <div class="row">
+            <form action="" method="POST">
+                <textarea class="form-control" name="contents" placeholder="Enter an Arabic word or phrase"></textarea>
+                <input type="submit" name="submit" value="Find TGV pairs">
+            </form>
+        </div>
+
+
+        <!--<div class="row">-->
+        <br><br>
+        {% if word|length > 0 %}
+            <span style="border:1px; border-style:solid; border-color:; padding: .7em;">
+                You searched for the word <b>{{word}}</b> which has a value of <b>{{tgv}}</b>.
+            </span><br><br><br>
+        {% endif %}
+
+
+
+        <table>
+            <tr>
+                <th>Match</th>
+                <th>Location</th>
+            </tr>
+            {% for word in pairs %}
+
+                <tr>
+                    <td style="white-space:nowrap"> <span>{{ word }}</span> </td>
+                    <td> <span>{{ pairs[word] }}</span> </td>
+                </tr>
+
+            {% endfor %}
+        </table>
+        <!--</div>-->
+
+        <br><br><br>
+</div>
+
+
+
+
+
+    </body>
+</html>

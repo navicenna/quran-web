@@ -60,13 +60,27 @@ def transString(string, reverse=0):
     Buckwalter back to Unicode, set reverse=1'''
     silents = ["|", "&", "F", "N", "K", "a", "u", "i", "~", "o", "{"] #map these diacritical marks to empty string
 
-    string = string.replace("|", ".")
-    for k,v in arabic2english.items():
-        string = string.replace(k,v)
-    for letter in silents:
-        string = string.replace(letter, "")
+    if reverse==0:
+        string = string.replace("|", ".")
+        for k,v in arabic2english.items():
+            string = string.replace(k,v)
+        for letter in silents:
+            string = string.replace(letter, "")
+
+    if reverse==1:
+        english2arabic = {}  # come back to this later!
+        for k,v in {en:ar for ar,en in arabic2english.items()}.items():
+            string = string.replace(k,v)
 
     return string
+
+
+def remove_diacritics(ar_string):
+    """Given an Arabic string, simplify it by removing diacritics"""
+    trnslit = transString(ar_string)
+    simplified = transString(trnslit, reverse=1)
+    return simplified
+
 
 def init_tgv_dict():
       tgv_dict = {
