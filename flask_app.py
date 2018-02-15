@@ -225,12 +225,20 @@ def tgv_matching():
             db.session.add(comment)
             db.session.commit()
         elif execute_this == "Find TGV pairs":
-            word = request.form["contents"]
-            tgv = calc_val(transString(word), "tgv")
-            pairs = [ngram for ngram in all_ngrams if ngram['tgv'] == tgv]
-            pairs_dict = build_tgv_match_dict(pairs)
+            req = request.form["contents"].strip()
+            if re.fullmatch('\d*', req):
+                tgv = int(req)
+                pairs = [ngram for ngram in all_ngrams if ngram['tgv'] == tgv]
+                pairs_dict = build_tgv_match_dict(pairs)
+                search_package = {'term': tgv, 'type': 'number'}
+            else:
+                word = req
+                tgv = calc_val(transString(word), "tgv")
+                pairs = [ngram for ngram in all_ngrams if ngram['tgv'] == tgv]
+                pairs_dict = build_tgv_match_dict(pairs)
+                search_package = {'term': word, 'type': 'word'}
             return render_template("tgv_matching.html", comments=Word.query.all(),
-                                    pairs=pairs_dict, word=word, tgv=tgv)
+                                    pairs=pairs_dict, search_package=search_package, tgv=tgv)
         return redirect(url_for('tgv_matching'))
 
 
