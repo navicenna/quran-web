@@ -10,12 +10,20 @@ import seaborn as sns, numpy as np
 
 
 infile = 'eng_quran_out.txt'
+sura_order_csv = 'sura_order.csv'
 
+qdf = pd.read_csv(infile, sep="|", header=None, quoting=3)
+qdf2 = pd.read_table(infile, sep="|")
 
-qdf = pd.read_csv(infile, sep="|", low_memory=False, header=None)
+print(qdf.count())
+sura_order = pd.read_csv(sura_order_csv, sep=",", low_memory=False)
 qdf.columns = ['sura', 'verse', 'arabic', 'english']
+#qdf.drop(columns=['arabic'], inplace=True)
+qdf = pd.merge(qdf, sura_order, how='inner', on=['sura'])
+qdf.sort_values(['sura_order','verse'], inplace=True)
+qdf['oindex'] = np.arange(1, len(qdf)+1)
 x = 'fox jumped over'
-
+print(qdf.count()[0])
 #pprint(df.head())
 
 
@@ -47,12 +55,19 @@ def sura_to_df(qdf, sura):
     return pd.concat(df_list, ignore_index=True)
 
 
-def quran_to_df():
-    pass
+def quran_to_df(qdf):
+    df_list = []
+    for i in range(1,115):
+        try:
+            df_list.append(sura_to_df(qdf, i))
+        except:
+            pass
+    return pd.concat(df_list, ignore_index=True)
+
     
 
 #ldf = verse_to_df(qdf.iloc[0,2], 1, 1)
-ldf = sura_to_df(qdf, 1)
+#ldf = quran_to_df(qdf)
 
 
 
