@@ -11,6 +11,7 @@ from funcs import init_tgv_dict, calc_val, transString, detect_arabic, remove_di
 from funcs_process_quran_text import *
 from sqlalchemy import text
 from collections import OrderedDict
+import solver
 
 app = Flask(__name__)
 sslify = SSLify(app)
@@ -51,6 +52,8 @@ class Verse(db.Model):
     ar = db.Column(db.String(4096))
     eng = db.Column(db.String(4096))
     translit = db.Column(db.String(4096)) #English transliteration
+    seq_order = db.Column(db.Integer)
+    chron_order = db.Column(db.Integer)
 
 # Variables to determine whether the raw Quran input should be loaded upon running
 #   the script, and if it should be loaded, just a test portion or the whole Quran
@@ -59,34 +62,27 @@ quran_test = False
 
 # Load Quran into table. First delete it, then add rows.
 quran_file = "/home/navid/mysite/eng_quran_out.txt"
+sura_order_table = "/home/navid/mysite/sura_order.csv"
 if quran_load:
     n = Verse.query.delete()
     db.session.commit()
 
-    testlines=[]
-    with open(quran_file, "r", encoding="utf-8") as f:
-        lines = [l.strip() for l in f.readlines()]
-        for x in range(10):
-            testlines.append(lines[x])
-
-
+    qdf = solver.quran_as_df(quran_file, sura_order_table)
 
     if quran_test:
         n = 111
     else:
         n = 50100
 
-    for l in lines[0:n]:
-        # print(l)
-        temp_verse = verse2dict(l)
-        # print(temp_verse)
-        temp_verse = Verse(nSura=temp_verse["nSura"],
-                          nVerse=temp_verse["nVerse"],
-                          ar=temp_verse["ar"],
-                          eng=temp_verse["eng"],
-                          translit=temp_verse["translit"]
-                          )
+    i = 0
+    for verse in qdf.itertuples():
+        temp_verse = Verse(nSura=verse.sura,
+                           nVerse=verse.verse,
+                           ar=verse.arabic,
+                           eng=verse.english,
+                           translit=transString(verse.arabic),
 
+                          )
         db.session.add(temp_verse)
     db.session.commit()
 
