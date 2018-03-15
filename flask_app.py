@@ -81,9 +81,11 @@ if quran_load:
                            ar=verse.arabic,
                            eng=verse.english,
                            translit=transString(verse.arabic),
-
+                           seq_order=verse.seq_order,
+                           chron_order=verse.chron_order
                           )
         db.session.add(temp_verse)
+        i+=1
     db.session.commit()
 
 # Build Quran dictionary and TGV dictionary
