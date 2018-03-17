@@ -53,16 +53,15 @@
 
 <script>
 
-    // window.onload = function() {
-    // if (window.jQuery) {
-    //     // jQuery is loaded
-    //     alert("jquery is working!");
-    // } else {
-    //     // jQuery is not loaded
-    //     alert("jquery not working");
-    // }
-    // }
-
+//     window.onload = function() {
+//     if (window.jQuery) {
+//         // jQuery is loaded
+//         alert("jquery is working!");
+//     } else {
+//         // jQuery is not loaded
+//         alert("jquery not working");
+//     }
+//     }
 
 </script>
 
@@ -85,6 +84,7 @@
 
 
 <div class="container">
+<h1>TGV Calculator</h1><br>
 
 {% for comment in comments %}
     <div class="row">
@@ -106,35 +106,37 @@
         </div>
 
 <!--Count alif in verse-->
-<h2>Alif count of verse or whole sura</h2>
-<br>
 
-    <div class="row">
-        Alif count = {{ alif_count.count }} <br>
-        Verse =
-        <p id="alif">
-            {{ alif_count.verse }}
-        </p>
-    </div>
+<!--<h2>Alif count of verse or whole sura</h2>-->
+<!--<br>-->
+
+<!--    <div class="row">-->
+<!--        Alif count = {{ alif_count.count }} <br>-->
+<!--        Verse =-->
+<!--        <p id="alif">-->
+<!--            {{ alif_count.verse }}-->
+<!--        </p>-->
+<!--    </div>-->
 
 
-        <div class="row">
-            <form action="." method="POST">
-                <textarea class="form-control" name="contents" placeholder="Enter sura and verse numbers"></textarea>
-                <input type="submit" name="submit" value="Count alif">
-            </form>
-        </div>
+<!--        <div class="row">-->
+<!--            <form action="." method="POST">-->
+<!--                <textarea class="form-control" name="contents" placeholder="Enter sura and verse numbers"></textarea>-->
+<!--                <input type="submit" name="submit" value="Count alif">-->
+<!--            </form>-->
+<!--        </div>-->
 
-        <div class="row">
-            <form action="." method="POST">
-                <input type="submit" name="submit"  value="Clear">
-            </form>
-        </div>
+<!--        <div class="row">-->
+<!--            <form action="." method="POST">-->
+<!--                <input type="submit" name="submit"  value="Clear">-->
+<!--            </form>-->
+<!--        </div>-->
 
 <!--Verse query-->
 
 <!--{% print(t) %}-->
-<br>
+
+<h1>Quranic Verse Search</h1><br>
 Query verse from Quran, either by verse and number, or by English or Arabic content:
         <div class="row">
             <form action="." method="POST">
@@ -152,8 +154,10 @@ Query verse from Quran, either by verse and number, or by English or Arabic cont
         <th>Arabic</th>
         <th>English</th>
     </tr>
+
+
 {% for x in verses %}
-    <tr>
+    <tr class="search-results">
         <td>{{x.nSura}}</td>
         <td><a href="http://masjidtucson.org/quran/frames/ch{{x.nSura}}.html#{{x.nVerse}}" target="_blank"> {{x.nVerse}} </a></td>
         <td>{{ x.ar }}</td>
@@ -163,7 +167,7 @@ Query verse from Quran, either by verse and number, or by English or Arabic cont
 </table>
 <br><br>
 
-
+<!--
 <br><br><br><br><br><br><br>
 <hr>
 <h1>testing area</h1>
@@ -178,23 +182,26 @@ apple
 <br>بابا
 
 </p>
-
-
+-->
+<!--"{{search_term}}"-->
 
 </div><!-- /.container -->
 
 
 <script type="text/javascript">
     jQuery.fn.highlight = function (str, className) {
-    var regex = new RegExp(str, "gi");
+        var regex = new RegExp(str, "gi");
 
-    return this.each(function () {
-        this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
+        return this.each(function () {
+            this.innerHTML = this.innerHTML.replace(regex, function(matched) {
+                                                                return "<span class=\"" + className + "\">" + matched + "</span>";
+
+            });
         });
     };
 
     // $("p#test").highlight("z","highlight");
-    $("#alif").highlight("ا","highlight");
+    $(".search-results").highlight("{{ search_term }}","highlight");
     // $("#alif").highlight("a","highlight");
     // $("p").highlight("a","highlight");
 </script>

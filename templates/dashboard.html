@@ -6,27 +6,6 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
         <style>
-            table {
-                font-family: arial, sans-serif;
-                /*border-collapse: collapse;*/
-                /*width: 100%;*/
-            }
-
-            td, th {
-                border: 1.4px solid #111aaa;
-                text-align: center;
-                padding: 6px;
-                word-wrap: break-word;
-            }
-
-            th {
-                word-wrap: break-word;
-            }
-
-            td:nth-child(1) {
-                text-align: left;
-            }
-
             input {
                 padding: 8px;
             }
@@ -121,13 +100,30 @@
                 box-shadow: 1px 1px 1px #a8a8a8;
             }
 
-            #sura_table {
-              width:100px;
-              height:100px;
+            #our_table {
+              /*width:100px;*/
+              /*height:100px;*/
               text-align:center;
               vertical-align:middle;
-              background-color:#ccc;
-              border:1px solid #fff;
+              /*background-color:#ccc;*/
+              /*border:1px solid #fff;*/
+              /*border-spacing: 10px;*/
+            }
+
+            #table-spacing {
+                border-spacing:20px;
+                border-collapse:separate;
+            }
+
+            td {
+              width:50px;
+              height:50px;
+              /*text-align:center;*/
+              /*vertical-align:middle;*/
+              background-color:#ddc;
+              padding:8px;
+              border-radius:8px;
+              border: 2px solid #eee;
             }
 
             table td.highlighted {
@@ -201,7 +197,7 @@
 
 
     <input type="submit" name="submit"  value="Calculate">
-</form>
+
 
 
 Result = <br>
@@ -212,16 +208,20 @@ Result = <br>
 <br><br>
 
 
-<h2>Sura selection panel -- testing for now</h2>
-<table cellpadding="0" cellspacing="1" id="our_table">
+<h2>Sura selection panel</h2>
+<table  id="our_table">
 {% for number_group in sura_numbers %}
     <tr>
     {% for number in number_group %}
-       <td>{{ number }}</td>
+        <td>
+           <input type="checkbox" name="sura" value={{number}}>
+           {{ number }}
+        </td>
     {% endfor %}
     </tr>
 {% endfor %}
 </table>
+</form>
 
 <br><br>
 <!--<table cellpadding="0" cellspacing="0" id="our_table">-->
@@ -264,7 +264,7 @@ Result = <br>
 
 $(function () {
   var isMouseDown = false;
-  $("#our_table td")
+  $("#our_table_temp td") //added temp to disable for now
     .mousedown(function () {
       isMouseDown = true;
       $(this).toggleClass("highlighted");

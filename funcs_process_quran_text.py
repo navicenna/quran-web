@@ -3,12 +3,13 @@
 import re
 from pprint import pprint
 from flask import Markup
-from funcs import calc_val
+from funcs import calc_val, transString
+import nltk
 
 # A dictionary that maps every possible Arabic letter to an English transliteration
 arabic2english = {
       u"\u0621": "'", # hamza-on-the-line
-      u"\u0622": "|", # madda
+      u"\u0622": "A", # madda
       u"\u0623": "A", # hamza-on-'alif
       u"\u0624": "&", # hamza-on-waaw, treat as waaw for now
       u"\u0625": "<", # hamza-under-'alif
@@ -133,7 +134,7 @@ def alif_count_verse(quran_dict, sura, verse, assumptions):
   mod = "strong"
   try:
     trans = transString(quran_dict[sura][verse]["arabic"])
-    print(sura, verse, trans)
+    # print(sura, verse, trans)
     total = sum( [1 for letter in trans if letter in assumptions] )
     letters = "".join([letter for letter in trans if letter in assumptions])
     return {"verse": Markup(quran_dict[sura][verse]["arabic"].replace("ا",  "<" + mod + ">ا</" + mod + ">"   )),
@@ -170,18 +171,19 @@ def alif_count_sura(quran_dict, sura, assumptions):
 
 
 # alif_count_sura: given Quran dictionary and a sura number,
-#                   count the number of alifs in the sura
+#                   count the number of alifs in the selected suras
 #
 # Returns: integer
-def alif_count_quran(quran_dict, assumptions):
+def alif_count_quran(quran_dict, assumptions, sura_selection):
     total, tgv = 0, 0
     # pprint( quran_dict[sura].keys())
     try:
         for sura in quran_dict.keys():
-            for verse in quran_dict[sura].keys():
-                verse_values = alif_count_verse(quran_dict, sura, verse, assumptions)
-                total += verse_values["count"]
-                tgv += verse_values["tgv"]
+            if sura in sura_selection:
+                for verse in quran_dict[sura].keys():
+                    verse_values = alif_count_verse(quran_dict, sura, verse, assumptions)
+                    total += verse_values["count"]
+                    tgv += verse_values["tgv"]
             # rv = total
         rv = {"verse": Markup("Alif count in sura " + str(sura) + " = <b>" + str(total) + "</b>"),
               "count": total,
@@ -202,7 +204,7 @@ def fetch_trans_dict():
     #   (u"\u0670", "`"), # dagger 'alif
     #   (u"\u0671", "{"), # waSla
       (u"\u0621", "'"), # hamza-on-the-line
-      (u"\u0622", "|") # madda
+      (u"\u0622", "A") # madda
       ],
       [
       (u"\u0623", "A"), # hamza-on-'alif
@@ -270,6 +272,51 @@ def fetch_sura_numbers():
               list(range(96, 115) ),
              ]
     return numbers
+
+
+# Functions to build the TGV dictionary
+def get_ngrams_verse(sura_nbr, verse_nbr, verse):
+    words = nltk.word_tokenize(verse)
+    my_bigrams = [' '.join(x) for x in nltk.bigrams(words)]
+    my_trigrams = [' '.join(x) for x in nltk.trigrams(words)]
+    all_grams = words + my_bigrams + my_trigrams
+    return [{"gram": w, "tgv": calc_val(transString(w), type_v="tgv"), "sura_nbr": sura_nbr, "verse_nbr": verse_nbr}
+            for w in all_grams]
+
+
+def get_ngrams_sura(sura_nbr, sura):
+    all_words = []
+    for verse_nbr in sura:
+        all_words.extend(get_ngrams_verse(
+            sura_nbr, verse_nbr, sura[verse_nbr]["arabic"]))
+    return all_words
+
+
+def get_ngrams_quran(quran_dict):
+    all_words = []
+    for sura_nbr in quran_dict:
+        all_words.extend(get_ngrams_sura(sura_nbr, quran_dict[sura_nbr]))
+    return list(sorted(all_words, key=lambda x: x["gram"]))
+
+
+def build_tgv_dict(all_words):
+    tgv_dict = {}
+    max_value = max(all_words, key=lambda x: x['tgv'])['tgv']
+    print("calculated max TGV: it is ", max_value)
+    for i in range(1, max_value+1):
+    # for i in range(1, 119):
+        tgv_dict[i] = [x.copy() for x in all_words if x['tgv'] == i]
+    print("created tgv_dict phase 1...")
+    for tgv_key in list(tgv_dict):
+        if len(tgv_dict[tgv_key]) == 0 :
+            del tgv_dict[tgv_key]
+        else:
+            for gram in tgv_dict[tgv_key]:
+                del gram['tgv']
+    print("created tgv_dict phase 2...now same as phase 1")
+
+    return tgv_dict
+
 
 
 
