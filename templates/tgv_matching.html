@@ -126,7 +126,7 @@
             <span style="border:1px; border-style:solid; border-color:; padding: .7em;">
                 You searched for the word <b>{{search_package['term']}}</b> which has a value of <b>{{tgv}}</b>.
             </span><br><br><br>
-        {% else %}
+        {% elif search_package['term']|length > 0 and search_package['type'] == 'number' %}
                 <span style="border:1px; border-style:solid; border-color:; padding: .7em;">
                     You searched for the TGV value <b>{{search_package['term']}}</b>.
                 </span><br><br><br>

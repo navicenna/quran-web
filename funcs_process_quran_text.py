@@ -9,7 +9,7 @@ import nltk
 # A dictionary that maps every possible Arabic letter to an English transliteration
 arabic2english = {
       u"\u0621": "'", # hamza-on-the-line
-      u"\u0622": "|", # madda
+      u"\u0622": "A", # madda
       u"\u0623": "A", # hamza-on-'alif
       u"\u0624": "&", # hamza-on-waaw, treat as waaw for now
       u"\u0625": "<", # hamza-under-'alif
@@ -204,7 +204,7 @@ def fetch_trans_dict():
     #   (u"\u0670", "`"), # dagger 'alif
     #   (u"\u0671", "{"), # waSla
       (u"\u0621", "'"), # hamza-on-the-line
-      (u"\u0622", "|") # madda
+      (u"\u0622", "A") # madda
       ],
       [
       (u"\u0623", "A"), # hamza-on-'alif

@@ -1,4 +1,4 @@
-
+#!/usr/bin/python3.6
 # A very simple Flask Hello World app for you to get started with...
 
 from flask import Flask, redirect, render_template, request, url_for, Markup
@@ -31,6 +31,7 @@ SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostnam
 )
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
@@ -57,7 +58,7 @@ class Verse(db.Model):
 
 # Variables to determine whether the raw Quran input should be loaded upon running
 #   the script, and if it should be loaded, just a test portion or the whole Quran
-quran_load = False
+quran_load = True
 quran_test = False
 
 # Load Quran into table. First delete it, then add rows.
@@ -69,31 +70,32 @@ if quran_load:
 
     qdf = solver.quran_as_df(quran_file, sura_order_table)
 
-    if quran_test:
+    if quran_test:  # if testing mode, only work with first few rows of data
         n = 111
     else:
         n = 50100
 
     i = 0
-    for verse in qdf.itertuples():
+    for verse in qdf[0:n].itertuples():
         temp_verse = Verse(nSura=verse.sura,
                            nVerse=verse.verse,
                            ar=verse.arabic,
                            eng=verse.english,
                            translit=transString(verse.arabic),
-                           seq_order=verse.seq_order,
-                           chron_order=verse.chron_order
+                           seq_order=verse.seq_index,
+                           chron_order=verse.chron_index
                           )
         db.session.add(temp_verse)
         i+=1
     db.session.commit()
 
 # Build Quran dictionary and TGV dictionary
-quran_dict = scrape_quran_into_dict(quran_file)
-print("assembled quran_dict")
-all_ngrams = get_ngrams_quran(quran_dict)
-print("assembled ngrams phase 1...")
-ngrams_sub = all_ngrams[0:6]
+# quran_dict = scrape_quran_into_dict(quran_file)
+# print("assembled quran_dict")
+# all_ngrams = get_ngrams_quran(quran_dict)
+# print("assembled ngrams phase 1...")
+# ngrams_sub = all_ngrams[0:6]
+
 #tgv_dict = build_tgv_dict(ngrams_sub)
 
 

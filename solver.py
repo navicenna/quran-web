@@ -1,3 +1,4 @@
+#!/usr/bin/python3.6
 """
 Module for solving the alef count
 
@@ -6,24 +7,27 @@ Started 2/28/2018
 
 import pandas as pd
 from pprint import pprint
-import seaborn as sns, numpy as np
+import numpy as np
 
 
-infile = 'eng_quran_out.txt'
-sura_order_csv = 'sura_order.csv'
+infile_temp = '/home/navid/mysite/eng_quran_out.txt'
+sura_order_csv_temp = '/home/navid/mysite/sura_order.csv'
 
 
 
 
 def quran_as_df(infile, sura_order_table):
     qdf = pd.read_csv(infile, sep="|", header=None, quoting=3)
-    sura_order = pd.read_csv(sura_order_csv, sep=",", low_memory=False)
+    sura_order = pd.read_csv(sura_order_table, sep=",", low_memory=False)
     qdf.columns = ['sura', 'verse', 'arabic', 'english']
-    qdf = pd.merge(qdf, sura_order, how='inner', on=['sura'])
-    qdf['seq_index'] = np.arange(1, len(qdf)+1)
-    qdf.sort_values(['sura_order','verse'], inplace=True)
-    qdf['chron_index'] = np.arange(1, len(qdf)+1)
-    return qdf
+    qdf_merged = pd.merge(qdf, sura_order, how='inner', on=['sura'])
+    qdf_merged['seq_index'] = np.arange(1, len(qdf)+1)
+    qdf_merged.sort_values(['sura_order','verse'], inplace=True)
+    qdf_merged['chron_index'] = np.arange(1, len(qdf)+1)
+    qdf_merged.sort_values(['sura','verse'], inplace=True)
+    # qdf_merged.sura = qdf_merged.sura.replace('\ufeff1', '1').astype(int)
+    # qdf_merged.verse = qdf_merged.verse.astype(int)
+    return qdf_merged
 
 
 def word_to_letter_df(word, sura, verse):
@@ -62,9 +66,9 @@ def quran_to_letter_df(qdf):
             pass
     return pd.concat(df_list, ignore_index=True)
 
-    
+
 if __name__=='__main__':
-    df = quran_as_df(infile, sura_order_csv)
+    df = quran_as_df(infile_temp, sura_order_csv_temp)
 #ldf = verse_to_letter_df(qdf.iloc[0,2], 1, 1)
 #ldf = quran_to_letter_df(qdf)
 
