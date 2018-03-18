@@ -13,6 +13,8 @@ from sqlalchemy import text
 from collections import OrderedDict
 import solver
 
+
+
 app = Flask(__name__)
 sslify = SSLify(app)
 app.debug = True
@@ -101,11 +103,12 @@ if quran_load:
 
 
 # Store queried verses
-verse_obj = []
+verse_obj, verse_obj_ordered = [], []
 # Store alif count
 alif_count = "N/A"
 # Store search word(s)
 search_term = 'N/A'
+search_term_ordered = 'N/A'
 # other vars
 result = ""
 
@@ -165,6 +168,35 @@ def index():
                 verse_obj.append(temp)
 
         return redirect(url_for('index'))
+
+
+# Ordered search function
+@app.route("/ordered_verse_search", methods=["GET", "POST"])
+def ordered_verse_search():
+    global verse_obj_ordered, search_term_ordered
+    alif_count = ""
+
+    # test=['a', 'b']
+    if request.method == "GET":
+        # search_term_ordered = '_undefined_' if len(search_term_ordered) < 1 else search_term_ordered
+        return render_template("ordered_verse_search.html", comments=Word.query.all(), verses=verse_obj,
+                                 alif_count=alif_count, search_term=search_term_ordered)
+    else:
+        execute_this = request.form["submit"]
+        logging.error(request.form)
+        if execute_this == "Get verse":
+            req = request.form["contents"].strip()
+            if re.match("\d+.*",req):
+                verse_obj_pre = query_verses_number(req, db)
+
+            # Remove diacritics from Arabic text
+            verse_obj = []
+            for verse_dict in verse_obj_pre:
+                temp = verse_dict.copy()
+                temp['ar'] = remove_diacritics(verse_dict['ar'])
+                verse_obj.append(temp)
+
+        return redirect(url_for('ordered_verse_search'))
 
 
 
@@ -290,6 +322,21 @@ def query_verses_number(req, db):
         textual = text("select nSura, nVerse, ar, eng from q_tbl where (nSura = :x1 and nVerse >= :x2)" +
         " or (nSura > :x1 and nSura < :x3) or (nSura = :x3 and nVerse <= :x4)")
         rv = db.session.execute(textual, {"x1": begSura, "x2": begVerse, "x3": endSura, "x4": endVerse}).fetchall()
+
+    return load_query_into_dict(rv)
+
+
+# process request to query certain verses by order
+def query_verses_order(req, db, order_type):
+    req = re.split("\D+", req)
+    print(req)
+
+    order = req[0]
+    order_type = "Chronological"
+    order_field = "seq_order" if order_type=="Sequential" else "chron_order"
+    query = "select nSura, nVerse, ar, eng from q_tbl where {} = :x1".format(order_field)
+    textual = text(query)
+    rv = db.session.execute(textual, {"x1": order}).fetchall()
 
     return load_query_into_dict(rv)
 
