@@ -186,15 +186,15 @@ def ordered_verse_search():
         logging.error(request.form)
         if execute_this == "Get verse":
             req = request.form["contents"].strip()
-            if re.match("\d+.*",req):
+            if re.match(r"\d+.*",req):
                 verse_obj_pre = query_verses_number(req, db)
 
             # Remove diacritics from Arabic text
-            verse_obj = []
+            verse_obj_ordered = []
             for verse_dict in verse_obj_pre:
                 temp = verse_dict.copy()
                 temp['ar'] = remove_diacritics(verse_dict['ar'])
-                verse_obj.append(temp)
+                verse_obj_ordered.append(temp)
 
         return redirect(url_for('ordered_verse_search'))
 
