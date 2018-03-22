@@ -88,8 +88,8 @@
 <h1>Quranic Verse Search</h1><br>
 Query verse from Quran, ordered either sequentially (order in final Quran) or chronologically (order of revelation).
         <div class="row">
-            <form action="." method="POST">
-                <textarea class="form-control" name="contents" placeholder="Enter sura and verse in this format: [sura]:[verse] (e.g. 1:1). Or enter English or Arabic search text."></textarea>
+            <form action="" method="POST">
+                <textarea class="form-control" name="contents" placeholder="Enter a number corresponding to the desired order."></textarea>
                 <input type="submit" name="submit" value="Get verse">
             </form>
         </div>
@@ -111,8 +111,8 @@ Query verse from Quran, ordered either sequentially (order in final Quran) or ch
     <tr class="search-results">
         <td>{{x.nSura}}</td>
         <td><a href="http://masjidtucson.org/quran/frames/ch{{x.nSura}}.html#{{x.nVerse}}" target="_blank"> {{x.nVerse}} </a></td>
-        <td>{{ x.seq_index }}</td>
-        <td>{{ x.chron_index }}</td>
+        <td>{{ x.seq_order }}</td>
+        <td>{{ x.chron_order }}</td>
         <td>{{ x.ar }}</td>
         <td>{{ x.eng }}</td>
     </tr>

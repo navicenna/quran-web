@@ -60,7 +60,7 @@ class Verse(db.Model):
 
 # Variables to determine whether the raw Quran input should be loaded upon running
 #   the script, and if it should be loaded, just a test portion or the whole Quran
-quran_load = True
+quran_load = False
 quran_test = False
 
 # Load Quran into table. First delete it, then add rows.
@@ -92,11 +92,11 @@ if quran_load:
     db.session.commit()
 
 # Build Quran dictionary and TGV dictionary
-# quran_dict = scrape_quran_into_dict(quran_file)
-# print("assembled quran_dict")
-# all_ngrams = get_ngrams_quran(quran_dict)
-# print("assembled ngrams phase 1...")
-# ngrams_sub = all_ngrams[0:6]
+quran_dict = scrape_quran_into_dict(quran_file)
+print("assembled quran_dict")
+all_ngrams = get_ngrams_quran(quran_dict)
+print("assembled ngrams phase 1...")
+ngrams_sub = all_ngrams[0:6]
 
 #tgv_dict = build_tgv_dict(ngrams_sub)
 
@@ -179,7 +179,7 @@ def ordered_verse_search():
     # test=['a', 'b']
     if request.method == "GET":
         # search_term_ordered = '_undefined_' if len(search_term_ordered) < 1 else search_term_ordered
-        return render_template("ordered_verse_search.html", comments=Word.query.all(), verses=verse_obj,
+        return render_template("ordered_verse_search.html", comments=Word.query.all(), verses=verse_obj_ordered,
                                  alif_count=alif_count, search_term=search_term_ordered)
     else:
         execute_this = request.form["submit"]
@@ -187,7 +187,7 @@ def ordered_verse_search():
         if execute_this == "Get verse":
             req = request.form["contents"].strip()
             if re.match(r"\d+.*",req):
-                verse_obj_pre = query_verses_number(req, db)
+                verse_obj_pre = query_verses_order(req, db, "Sequential")
 
             # Remove diacritics from Arabic text
             verse_obj_ordered = []
@@ -334,7 +334,7 @@ def query_verses_order(req, db, order_type):
     order = req[0]
     order_type = "Chronological"
     order_field = "seq_order" if order_type=="Sequential" else "chron_order"
-    query = "select nSura, nVerse, ar, eng from q_tbl where {} = :x1".format(order_field)
+    query = "select nSura, nVerse, ar, eng, seq_order, chron_order from q_tbl where {} = :x1".format(order_field)
     textual = text(query)
     rv = db.session.execute(textual, {"x1": order}).fetchall()
 
@@ -376,7 +376,8 @@ def load_query_into_dict(queried_verses):
         di["ar"] = v[2]
         di["eng"] = v[3]
         try:
-            di["translit"] = v[4]
+            di["seq_order"] = v[4]
+            di["chron_order"] = v[5]
         except:
             pass
         rv.append(di.copy())
