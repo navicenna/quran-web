@@ -186,8 +186,9 @@ def ordered_verse_search():
         logging.error(request.form)
         if execute_this == "Get verse":
             req = request.form["contents"].strip()
+            order_selection = request.form["order-type"].strip()
             if re.match(r"\d+.*",req):
-                verse_obj_pre = query_verses_order(req, db, "Sequential")
+                verse_obj_pre = query_verses_order(req, db, order_selection)
 
             # Remove diacritics from Arabic text
             verse_obj_ordered = []
