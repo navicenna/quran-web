@@ -50,6 +50,9 @@
 
 <!-- Include JQuery to highlight alif's -->
 <script src="/static/jquery-3.2.1.min.js"></script>
+<!-- Include clipboard.js -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+
 
 <script>
 
@@ -161,7 +164,12 @@ Query verse from Quran, either by verse and number, or by English or Arabic cont
         <td>{{x.nSura}}</td>
         <td><a href="http://masjidtucson.org/quran/frames/ch{{x.nSura}}.html#{{x.nVerse}}" target="_blank"> {{x.nVerse}} </a></td>
         <td>{{ x.ar }}</td>
-        <td>{{ x.eng }}</td>
+        <td id="{{x.nSura}}-{{x.nVerse}}">
+            {{ x.eng }}
+            <button class="btn" data-clipboard-target="#{{x.nSura}}-{{x.nVerse}}">
+                <img src="assets/clippy.svg" alt="Copy">
+            </button>
+        </td>
     </tr>
 {% endfor %}
 </table>
