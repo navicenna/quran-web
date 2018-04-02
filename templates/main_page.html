@@ -40,6 +40,19 @@
             #alif {
                 font-size:170%
             }
+
+            .copy-button {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            .copy-icon {
+                margin: 0px;
+                padding: 0px;
+                width: 25px;
+                /*object-fit: none; */
+                /*object-position: center; */
+            }
         </style>
 
         <title>Quran Analysis Project</title>
@@ -55,17 +68,13 @@
 
 
 <script>
-
-//     window.onload = function() {
-//     if (window.jQuery) {
-//         // jQuery is loaded
-//         alert("jquery is working!");
-//     } else {
-//         // jQuery is not loaded
-//         alert("jquery not working");
-//     }
-//     }
-
+var clipboard = new ClipboardJS('.btn');
+    clipboard.on('success', function(e) {
+        console.log(e);
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
 </script>
 
 
@@ -164,10 +173,10 @@ Query verse from Quran, either by verse and number, or by English or Arabic cont
         <td>{{x.nSura}}</td>
         <td><a href="http://masjidtucson.org/quran/frames/ch{{x.nSura}}.html#{{x.nVerse}}" target="_blank"> {{x.nVerse}} </a></td>
         <td>{{ x.ar }}</td>
-        <td id="{{x.nSura}}-{{x.nVerse}}">
+        <td id="s{{x.nSura}}-v{{x.nVerse}}">
             {{ x.eng }}
-            <button class="btn" data-clipboard-target="#{{x.nSura}}-{{x.nVerse}}">
-                <img src="assets/clippy.svg" alt="Copy">
+            <button class="copy-button btn" data-clipboard-target="#s{{x.nSura}}-v{{x.nVerse}}">
+                <img src="/assets/copy_obj.svg" alt="Copy" class="copy-icon">
             </button>
         </td>
     </tr>

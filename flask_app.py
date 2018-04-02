@@ -158,6 +158,7 @@ def index():
             req = request.form["contents"].strip()
             if re.match("\d+\D+\d+\D*",req):
                 verse_obj_pre = query_verses_number(req, db)
+                search_term = 'N/A'
             else:
                 search_term = remove_diacritics(req) if detect_arabic(req) else req
                 verse_obj_pre = query_verses_text(req, db)
