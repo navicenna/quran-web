@@ -163,6 +163,8 @@ Query verse from Quran, either by verse and number, or by English or Arabic cont
     <tr>
         <th>Sura #</th>
         <th>Verse #</th>
+        <th>Seq. Order</th>
+        <th>Chron. Order</th>
         <th>Arabic</th>
         <th>English</th>
     </tr>
@@ -172,6 +174,8 @@ Query verse from Quran, either by verse and number, or by English or Arabic cont
     <tr class="search-results">
         <td>{{x.nSura}}</td>
         <td><a href="http://masjidtucson.org/quran/frames/ch{{x.nSura}}.html#{{x.nVerse}}" target="_blank"> {{x.nVerse}} </a></td>
+        <td>{{ x.seq_order }}</td>
+        <td>{{ x.chron_order }}</td>
         <td>{{ x.ar }}</td>
         <td id="s{{x.nSura}}-v{{x.nVerse}}">
             {{ x.eng }}

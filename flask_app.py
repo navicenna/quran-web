@@ -318,10 +318,11 @@ def query_verses_number(req, db):
     endVerse = req[3]
 
     if begSura==endSura:
-        textual = text("select nSura, nVerse, ar, eng from q_tbl where nSura = :x1 and nVerse >= :x2 and nVerse <= :x4 ")
+        textual = text(
+            "select nSura, nVerse, ar, eng, seq_order, chron_order from q_tbl where nSura = :x1 and nVerse >= :x2 and nVerse <= :x4 ")
         rv = db.session.execute(textual, {"x1": begSura, "x2": begVerse, "x4": endVerse}).fetchall()
     else:
-        textual = text("select nSura, nVerse, ar, eng from q_tbl where (nSura = :x1 and nVerse >= :x2)" +
+        textual = text("select nSura, nVerse, ar, eng, seq_order, chron_order from q_tbl where (nSura = :x1 and nVerse >= :x2)" +
         " or (nSura > :x1 and nSura < :x3) or (nSura = :x3 and nVerse <= :x4)")
         rv = db.session.execute(textual, {"x1": begSura, "x2": begVerse, "x3": endSura, "x4": endVerse}).fetchall()
 
@@ -351,11 +352,11 @@ def query_verses_text(req, db):
 
     if detect_arabic(req):
         search = '%' + transString(req) + '%'
-        textual = text("select nSura, nVerse, ar, eng, translit from q_tbl " +
+        textual = text("select nSura, nVerse, ar, eng, seq_order, chron_order from q_tbl " +
                        "where translit like :x1")
     else:
         search = '%' + req + '%'
-        textual = text("select nSura, nVerse, ar, eng, translit from q_tbl " +
+        textual = text("select nSura, nVerse, ar, eng, seq_order, chron_order from q_tbl " +
                        "where eng like :x1")
 
     print("req is: ", req)
