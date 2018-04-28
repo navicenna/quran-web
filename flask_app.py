@@ -187,9 +187,9 @@ def ordered_verse_search():
         logging.error(request.form)
         if execute_this == "Get verse":
             req = request.form["contents"].strip()
-            order_selection = request.form["order-type"].strip()
+            # order_selection = request.form["order-type"].strip()
             if re.match(r"\d+.*",req):
-                verse_obj_pre = query_verses_order(req, db, order_selection)
+                verse_obj_pre = query_verses_order(req, db, "na")
 
             # Remove diacritics from Arabic text
             verse_obj_ordered = []
@@ -336,8 +336,9 @@ def query_verses_order(req, db, order_type):
 
     order = req[0]
     order_type = "Chronological"
-    order_field = "seq_order" if order_type=="Sequential" else "chron_order"
-    query = "select nSura, nVerse, ar, eng, seq_order, chron_order from q_tbl where {} = :x1".format(order_field)
+    # order_field = "seq_order" if order_type=="Sequential" else "chron_order"
+    # query = "select nSura, nVerse, ar, eng, seq_order, chron_order from q_tbl where {} = :x1".format(order_field)
+    query = "select nSura, nVerse, ar, eng, seq_order, chron_order from q_tbl where seq_order = :x1 or chron_order = :x1"
     textual = text(query)
     rv = db.session.execute(textual, {"x1": order}).fetchall()
 

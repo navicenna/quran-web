@@ -1,0 +1,291 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+        <style>
+            input {
+                padding: 8px;
+            }
+
+            /*tr:nth-child(even) {*/
+            /*    background-color: #dea;*/
+            /*}*/
+
+            span.highlight{
+                background:#f7e06c;
+                padding:2.5px;
+                // display:inline-block;
+                // color:#f7e06c;
+                opacity:0.65;
+                border-radius:3px;
+                font-weight:normal;
+                font-size:107%
+            }
+
+            p{
+                font-family:Verdana;
+            }
+
+            #arabic {
+                font-size:210%
+            }
+            #translit {
+                padding:11px
+            }
+
+            .flex-master-container .flex-container {
+                /*padding: 10;*/
+                /*margin: 10;*/
+                list-style: none;
+
+                display: flex;
+                opacity: 1;
+
+                flex-direction: column;
+                flex-wrap: wrap;
+
+                /*-webkit-flex-flow: row wrap;*/
+                justify-content: space-between;
+                /*align-items: flex-start;*/
+                align-items: flex-start;
+            }
+
+            .flex-master-container {
+                /*padding: 10;*/
+                /*margin: 10;*/
+                list-style: none;
+
+                display: flex;
+                opacity: 1;
+
+                flex-direction: row;
+                /*flex-wrap: wrap;*/
+
+                /*-webkit-flex-flow: row wrap;*/
+                /*justify-content: space-between;*/
+                /*align-items: flex-start;*/
+                align-items: flex-start;
+            }
+
+            .flex-master-container .flex-container .flex-item {
+                background: rgba(183, 260, 188, 0.80);
+                padding: 4px;
+                margin: 3px;
+                border-radius: 10px;
+
+                width: 80px;
+                /*height: 150px;*/
+
+
+                opacity: 1;
+
+                /*flex-basis: 50px;*/
+                /*height: 150px;*/
+                /*min-width: 50px;*/
+                /*max-width:500px;*/
+
+
+                /*line-height: 150px;*/
+                color: black;
+
+
+                /*font-weight: bold;*/
+                /*font-size: 1.3em;*/
+                text-align: left;
+                /*flex-shrink: 1;*/
+                /*flex-grow: 50;*/
+                box-shadow: 1px 1px 1px #a8a8a8;
+            }
+
+            #our_table {
+              /*width:100px;*/
+              /*height:100px;*/
+              text-align:center;
+              vertical-align:middle;
+              /*background-color:#ccc;*/
+              /*border:1px solid #fff;*/
+              /*border-spacing: 10px;*/
+            }
+
+            #table-spacing {
+                border-spacing:20px;
+                border-collapse:separate;
+            }
+
+            td {
+              width:50px;
+              height:50px;
+              /*text-align:center;*/
+              /*vertical-align:middle;*/
+              background-color:#ddc;
+              padding:8px;
+              border-radius:8px;
+              border: 2px solid #eee;
+            }
+
+            table td.highlighted {
+              background-color:#999;
+            }
+
+        </style>
+
+        <title>Letter Count Dashboard</title>
+    </head>
+
+    <body>
+
+
+<!-- Include JQuery to highlight alif's -->
+<script src="/static/jquery-3.2.1.min.js"></script>
+
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Quran Analysis Project</a>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container">
+
+<!--Count alif in verse-->
+<h2>Letter selection panel</h2>
+<br>
+
+<form action="" method="POST">
+<table>
+    <tr>
+        <th>Arabic Letters - Grouped by Shape</th>
+        <!--<th>Transliteration</th>-->
+    </tr>
+</table>
+
+<div class="flex-master-container">
+
+{% for letter_group in letters %}
+<ul class="flex-container">
+
+{% for tuple in letter_group %}
+<li class="flex-item">
+    <input type="checkbox" name="letter" value={{ tuple[1] }}> <span id="arabic">{{ tuple[0] }}</span>
+    <!--<span id="translit">{{ tuple[1] }}</span>-->
+    <br>
+</li>
+{% endfor %}
+
+</ul>
+{% endfor %}
+
+</div>
+
+<br><br>
+
+
+<h2>Calculate letter count and TGV</h2>
+
+
+    <input type="submit" name="submit"  value="Calculate">
+
+
+
+Result = <br>
+{{ result }}
+
+
+
+<br><br>
+
+
+<h2>Sura selection panel</h2>
+<table  id="our_table">
+{% for number_group in sura_numbers %}
+    <tr>
+    {% for number in number_group %}
+        <td>
+           <input type="checkbox" name="sura" value={{number}}>
+           {{ number }}
+        </td>
+    {% endfor %}
+    </tr>
+{% endfor %}
+</table>
+</form>
+
+<br><br>
+<!--<table cellpadding="0" cellspacing="0" id="our_table">-->
+<!--  <tr>-->
+<!--    <td>a</td>-->
+<!--    <td>b</td>-->
+<!--    <td>c</td>-->
+<!--  </tr>-->
+<!--  <tr>-->
+<!--    <td>d</td>-->
+<!--    <td>e</td>-->
+<!--    <td>f</td>-->
+<!--  </tr>-->
+<!--  <tr>-->
+<!--    <td>g</td>-->
+<!--    <td>h</td>-->
+<!--    <td>i</td>-->
+<!--  </tr>-->
+<!--</table>-->
+
+
+</div><!-- /.container -->
+
+
+
+<script type="text/javascript">
+
+    // jQuery.fn.highlight = function (str, className) {
+    // var regex = new RegExp(str, "gi");
+
+    // return this.each(function () {
+    //     this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
+    //     });
+    // };
+
+    // $("p#test").highlight("z","highlight");
+    // $("#alif").highlight("ا","highlight");
+    // $("#alif").highlight("a","highlight");
+    // $("p").highlight("a","highlight");
+
+$(function () {
+  var isMouseDown = false;
+  $("#our_table_temp td") //added temp to disable for now
+    .mousedown(function () {
+      isMouseDown = true;
+      $(this).toggleClass("highlighted");
+      return false; // prevent text selection
+    })
+    .mouseover(function () {
+      if (isMouseDown) {
+        $(this).toggleClass("highlighted");
+      }
+    });
+
+  $(document)
+    .mouseup(function () {
+      isMouseDown = false;
+    });
+});
+
+
+</script>
+
+
+
+    </body>
+</html>
