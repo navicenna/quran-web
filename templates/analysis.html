@@ -132,7 +132,7 @@
 
         </style>
 
-        <title>Letter Count Dashboard</title>
+        <title>Analysis Homepage</title>
     </head>
 
     <body>
@@ -161,129 +161,17 @@
 <div class="container">
 
 <!--Count alif in verse-->
-<h2>Letter selection panel</h2>
+<h2>Analysis Homepage</h2>
 <br>
 
-<form action="" method="POST">
-<table>
-    <tr>
-        <th>Arabic Letters - Grouped by Shape</th>
-        <!--<th>Transliteration</th>-->
-    </tr>
-</table>
 
-<div class="flex-master-container">
 
-{% for letter_group in letters %}
-<ul class="flex-container">
 
-{% for tuple in letter_group %}
-<li class="flex-item">
-    <input type="checkbox" name="letter" value={{ tuple[1] }}> <span id="arabic">{{ tuple[0] }}</span>
-    <!--<span id="translit">{{ tuple[1] }}</span>-->
-    <br>
-</li>
-{% endfor %}
-
-</ul>
-{% endfor %}
 
 </div>
 
-<br><br>
 
 
-<h2>Calculate letter count and TGV</h2>
-
-
-    <input type="submit" name="submit"  value="Calculate">
-
-
-
-Result = <br>
-{{ result }}
-
-
-
-<br><br>
-
-
-<h2>Sura selection panel</h2>
-<table  id="our_table">
-{% for number_group in sura_numbers %}
-    <tr>
-    {% for number in number_group %}
-        <td>
-           <input type="checkbox" name="sura" value={{number}}>
-           {{ number }}
-        </td>
-    {% endfor %}
-    </tr>
-{% endfor %}
-</table>
-</form>
-
-<br><br>
-<!--<table cellpadding="0" cellspacing="0" id="our_table">-->
-<!--  <tr>-->
-<!--    <td>a</td>-->
-<!--    <td>b</td>-->
-<!--    <td>c</td>-->
-<!--  </tr>-->
-<!--  <tr>-->
-<!--    <td>d</td>-->
-<!--    <td>e</td>-->
-<!--    <td>f</td>-->
-<!--  </tr>-->
-<!--  <tr>-->
-<!--    <td>g</td>-->
-<!--    <td>h</td>-->
-<!--    <td>i</td>-->
-<!--  </tr>-->
-<!--</table>-->
-
-
-</div><!-- /.container -->
-
-
-
-<script type="text/javascript">
-
-    // jQuery.fn.highlight = function (str, className) {
-    // var regex = new RegExp(str, "gi");
-
-    // return this.each(function () {
-    //     this.innerHTML = this.innerHTML.replace(regex, function(matched) {return "<span class=\"" + className + "\">" + matched + "</span>";});
-    //     });
-    // };
-
-    // $("p#test").highlight("z","highlight");
-    // $("#alif").highlight("ا","highlight");
-    // $("#alif").highlight("a","highlight");
-    // $("p").highlight("a","highlight");
-
-$(function () {
-  var isMouseDown = false;
-  $("#our_table_temp td") //added temp to disable for now
-    .mousedown(function () {
-      isMouseDown = true;
-      $(this).toggleClass("highlighted");
-      return false; // prevent text selection
-    })
-    .mouseover(function () {
-      if (isMouseDown) {
-        $(this).toggleClass("highlighted");
-      }
-    });
-
-  $(document)
-    .mouseup(function () {
-      isMouseDown = false;
-    });
-});
-
-
-</script>
 
 
 

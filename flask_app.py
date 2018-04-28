@@ -201,6 +201,15 @@ def ordered_verse_search():
         return redirect(url_for('ordered_verse_search'))
 
 
+# Ordered search function
+@app.route("/analysis", methods=["GET", "POST"])
+def analysis():
+    if request.method == "GET":
+        return render_template("analysis.html")
+    else:
+        return redirect(url_for('analysis'))
+
+
 
 # @app.route('/wibble')
 # def wibble():
