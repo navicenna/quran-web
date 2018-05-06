@@ -32,6 +32,9 @@
                 font-size: 105%;
                 /* background: teal; */
             }
+            .table-responsive .table {
+                max-width: none;
+            }
         }
 
         @media only screen and (max-width: 700px) and (orientation: landscape) {
@@ -123,14 +126,13 @@
 
 
     <div class="container main-content">
+        <br>
         <h1>TGV Calculator</h1>
         <br>
 
         <div class="mobile">
             {% for comment in comments %}
-            <div class="row">
                 {{ comment.content }}
-            </div>
             {% endfor %}
         </div>
 
@@ -153,7 +155,9 @@
 
         <br>
 
-        <table class="table-responsive-sm">
+        <div class="table-responsive">
+        <table>
+            <!--<table class="table-responsive table-responsive-sm table-responsive-md">-->
             <tr>
                 <th>Sura #</th>
                 <th>Verse #</th>
@@ -182,6 +186,7 @@
             </tr>
             {% endfor %}
         </table>
+        </div>
         <br>
         <br>
 
