@@ -14,7 +14,6 @@ from collections import OrderedDict
 import solver
 
 
-
 app = Flask(__name__)
 sslify = SSLify(app)
 app.debug = True
@@ -23,7 +22,7 @@ app.config["SECRET_KEY"] = 'SK119'
 app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 
 
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
     username="navid",

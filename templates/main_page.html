@@ -1,15 +1,17 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+        <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <style>
             table {
                 font-family: arial, sans-serif;
                 border-collapse: collapse;
-                width: 100%;
+                /*width: 100%;*/
             }
 
             td, th {
@@ -21,6 +23,27 @@
             tr:nth-child(even) {
                 background-color: #dea;
             }
+
+            /*@media only screen and (max-width: 400px){*/
+            /*    body {*/
+            /*        margin: 0 auto;*/
+            /*        max-width: 100%;*/
+                    /*font-size: 210%;*/
+            /*    }*/
+            /*    .mobile {*/
+            /*        font-size: 165%;*/
+            /*        background: teal;*/
+            /*    }*/
+            /*    table {*/
+            /*        max-width: 100%;*/
+            /*        overflow-x: hidden;*/
+            /*    }*/
+            /*    .main-content {*/
+            /*        margin: 0 auto;*/
+            /*        max-width: 98%;*/
+            /*    }*/
+            /*}*/
+
 
             span.highlight{
                 background:#f7e06c;
@@ -80,10 +103,10 @@ var clipboard = new ClipboardJS('.btn');
 
 
 
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">-->
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -99,14 +122,16 @@ var clipboard = new ClipboardJS('.btn');
 </nav>
 
 
-<div class="container">
+<div class="container main-content">
 <h1>TGV Calculator</h1><br>
 
+<div class="mobile">
 {% for comment in comments %}
     <div class="row">
         {{ comment.content }}
     </div>
 {% endfor %}
+</div>
 
         <div class="row">
             <form action="." method="POST">
@@ -163,7 +188,7 @@ Query verse from Quran, either by verse and number, or by English or Arabic cont
 
 <br>
 
-<table>
+<table class=".table-responsive">
     <tr>
         <th>Sura #</th>
         <th>Verse #</th>
