@@ -14,7 +14,6 @@ from collections import OrderedDict
 import solver
 
 
-
 app = Flask(__name__)
 sslify = SSLify(app)
 app.debug = True
@@ -23,7 +22,7 @@ app.config["SECRET_KEY"] = 'SK119'
 app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 
 
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
     username="navid",
@@ -252,7 +251,7 @@ def tgv_matching():
     # test=['a', 'b']
     if request.method == "GET":
         return render_template("tgv_matching.html", comments=Word.query.all(), verses=verse_obj,
-                                 alif_count=alif_count)
+                                 alif_count=alif_count, search_package={})
     else:
         execute_this = request.form["submit"]
         logging.error(request.form)

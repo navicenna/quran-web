@@ -1,198 +1,196 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-        <style>
-            table {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="width=device-width">
+
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            /*width: 100%;*/
+        }
+
+        td,
+        th {
+            border: 1.5px solid #111aaa;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dea;
+        }
+
+        @media only screen and (max-width: 700px) {
+            .mobile {
+                font-size: 105%;
+                /* background: teal; */
             }
-
-            td, th {
-                border: 1.5px solid #111aaa;
-                text-align: left;
-                padding: 8px;
+            .table-responsive .table {
+                max-width: none;
             }
+        }
 
-            tr:nth-child(even) {
-                background-color: #dea;
+        @media only screen and (max-width: 700px) and (orientation: landscape) {
+            .mobile {
+                font-size: 105%;
+                /* background: teal; */
             }
-
-            span.highlight{
-                background:#f7e06c;
-                padding:2.5px;
-                // display:inline-block;
-                // color:#f7e06c;
-                opacity:0.65;
-                border-radius:3px;
-                font-weight:normal;
-                font-size:107%
+            .main-content {
+                margin: 0 auto;
+                max-width: 98%;
             }
-
-            p{
-                font-family:Verdana;
-            }
-
-            #alif {
-                font-size:170%
-            }
-
-            .copy-button {
-                margin: 0px;
-                padding: 0px;
-            }
-
-            .copy-icon {
-                margin: 0px;
-                padding: 0px;
-                width: 25px;
-                /*object-fit: none; */
-                /*object-position: center; */
-            }
-        </style>
-
-        <title>Quran Analysis Project</title>
-    </head>
-
-    <body>
+        }
 
 
-<!-- Include JQuery to highlight alif's -->
-<script src="/static/jquery-3.2.1.min.js"></script>
-<!-- Include clipboard.js -->
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+        span.highlight {
+            background: #f7e06c;
+            padding: 2.5px; // display:inline-block;
+            // color:#f7e06c;
+            opacity: 0.65;
+            border-radius: 3px;
+            font-weight: normal;
+            font-size: 107%
+        }
+
+        p {
+            font-family: Verdana;
+        }
+
+        #alif {
+            font-size: 170%
+        }
+
+        .copy-button {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .copy-icon {
+            margin: 0px;
+            padding: 0px;
+            width: 25px;
+            /*object-fit: none; */
+            /*object-position: center; */
+        }
+    </style>
+
+    <title>Quran Analysis Project</title>
+</head>
+
+<body>
 
 
-<script>
-var clipboard = new ClipboardJS('.btn');
-    clipboard.on('success', function(e) {
-        console.log(e);
-    });
-    clipboard.on('error', function(e) {
-        console.log(e);
-    });
-</script>
+    <!-- Include JQuery to highlight alif's -->
+    <script src="/static/jquery-3.2.1.min.js"></script>
+    <!-- Include clipboard.js -->
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+
+
+    <script>
+        var clipboard = new ClipboardJS('.btn');
+        clipboard.on('success', function (e) {
+            console.log(e);
+        });
+        clipboard.on('error', function (e) {
+            console.log(e);
+        });
+    </script>
 
 
 
 
-<nav class="navbar navbar-inverse">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    <a class="navbar-brand" href="#">Main Page</a>
-    <a class="navbar-brand" href="/dashboard">Letter Counting</a>
-    <a class="navbar-brand" href="/tgv_matching">TGV Matching</a>
-    <a class="navbar-brand" href="/ordered_verse_search">Ordered Verse Search</a>
-    <a class="navbar-brand" href="/analysis">Analysis</a>
-    </div>
-  </div>
-</nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <div class="navbar-header">
+                <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">-->
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Main Page</a>
+                <a class="navbar-brand" href="/dashboard">Letter Counting</a>
+                <a class="navbar-brand" href="/tgv_matching">TGV Matching</a>
+                <a class="navbar-brand" href="/ordered_verse_search">Ordered Verse Search</a>
+                <a class="navbar-brand" href="/analysis">Analysis</a>
+            </div>
+        </div>
+    </nav>
 
 
-<div class="container">
-<h1>TGV Calculator</h1><br>
+    <div class="container main-content">
+        <br>
+        <h1>TGV Calculator</h1>
+        <br>
 
-{% for comment in comments %}
-    <div class="row">
-        {{ comment.content }}
-    </div>
-{% endfor %}
-
-        <div class="row">
-            <form action="." method="POST">
-                <textarea class="form-control" name="contents" placeholder="Enter an Arabic word or phrase"></textarea>
-                <input type="submit" name="submit" value="Calculate TGV">
-            </form>
+        <div class="mobile">
+            {% for comment in comments %}
+                {{ comment.content }}
+            {% endfor %}
         </div>
 
-        <div class="row">
-            <form action="." method="POST">
-                <input type="submit" name="submit"  value="Clear">
-            </form>
+        <form action="." method="POST">
+            <textarea class="form-control" name="contents" placeholder="Enter an Arabic word or phrase"></textarea>
+            <input type="submit" name="submit" value="Calculate TGV">
+        </form>
+
+        <form action="." method="POST">
+            <input type="submit" name="submit" value="Clear">
+        </form>
+
+
+        <h1>Quranic Verse Search</h1>
+        <br> Query verse from Quran, either by verse and number, or by English or Arabic content:
+        <form action="." method="POST">
+            <textarea class="form-control" name="contents" placeholder="Enter sura and verse in this format: [sura]:[verse] (e.g. 1:1). Or enter English or Arabic search text."></textarea>
+            <input type="submit" name="submit" value="Get verse">
+        </form>
+
+        <br>
+
+        <div class="table-responsive">
+        <table>
+            <!--<table class="table-responsive table-responsive-sm table-responsive-md">-->
+            <tr>
+                <th>Sura #</th>
+                <th>Verse #</th>
+                <th>Seq. Order</th>
+                <th>Chron. Order</th>
+                <th>Arabic</th>
+                <th>English</th>
+            </tr>
+
+
+            {% for x in verses %}
+            <tr class="search-results">
+                <td>{{x.nSura}}</td>
+                <td>
+                    <a href="http://masjidtucson.org/quran/frames/ch{{x.nSura}}.html#{{x.nVerse}}" target="_blank"> {{x.nVerse}} </a>
+                </td>
+                <td>{{ x.seq_order }}</td>
+                <td>{{ x.chron_order }}</td>
+                <td>{{ x.ar }}</td>
+                <td id="s{{x.nSura}}-v{{x.nVerse}}">
+                    {{ x.eng }}
+                    <button class="copy-button btn" data-clipboard-target="#s{{x.nSura}}-v{{x.nVerse}}">
+                        <img src="/assets/copy_obj.svg" alt="Copy" class="copy-icon">
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
         </div>
+        <br>
+        <br>
 
-<!--Count alif in verse-->
-
-<!--<h2>Alif count of verse or whole sura</h2>-->
-<!--<br>-->
-
-<!--    <div class="row">-->
-<!--        Alif count = {{ alif_count.count }} <br>-->
-<!--        Verse =-->
-<!--        <p id="alif">-->
-<!--            {{ alif_count.verse }}-->
-<!--        </p>-->
-<!--    </div>-->
-
-
-<!--        <div class="row">-->
-<!--            <form action="." method="POST">-->
-<!--                <textarea class="form-control" name="contents" placeholder="Enter sura and verse numbers"></textarea>-->
-<!--                <input type="submit" name="submit" value="Count alif">-->
-<!--            </form>-->
-<!--        </div>-->
-
-<!--        <div class="row">-->
-<!--            <form action="." method="POST">-->
-<!--                <input type="submit" name="submit"  value="Clear">-->
-<!--            </form>-->
-<!--        </div>-->
-
-<!--Verse query-->
-
-<!--{% print(t) %}-->
-
-<h1>Quranic Verse Search</h1><br>
-Query verse from Quran, either by verse and number, or by English or Arabic content:
-        <div class="row">
-            <form action="." method="POST">
-                <textarea class="form-control" name="contents" placeholder="Enter sura and verse in this format: [sura]:[verse] (e.g. 1:1). Or enter English or Arabic search text."></textarea>
-                <input type="submit" name="submit" value="Get verse">
-            </form>
-        </div>
-
-<br>
-
-<table>
-    <tr>
-        <th>Sura #</th>
-        <th>Verse #</th>
-        <th>Seq. Order</th>
-        <th>Chron. Order</th>
-        <th>Arabic</th>
-        <th>English</th>
-    </tr>
-
-
-{% for x in verses %}
-    <tr class="search-results">
-        <td>{{x.nSura}}</td>
-        <td><a href="http://masjidtucson.org/quran/frames/ch{{x.nSura}}.html#{{x.nVerse}}" target="_blank"> {{x.nVerse}} </a></td>
-        <td>{{ x.seq_order }}</td>
-        <td>{{ x.chron_order }}</td>
-        <td>{{ x.ar }}</td>
-        <td id="s{{x.nSura}}-v{{x.nVerse}}">
-            {{ x.eng }}
-            <button class="copy-button btn" data-clipboard-target="#s{{x.nSura}}-v{{x.nVerse}}">
-                <img src="/assets/copy_obj.svg" alt="Copy" class="copy-icon">
-            </button>
-        </td>
-    </tr>
-{% endfor %}
-</table>
-<br><br>
-
-<!--
+        <!--
 <br><br><br><br><br><br><br>
 <hr>
 <h1>testing area</h1>
@@ -208,30 +206,32 @@ apple
 
 </p>
 -->
-<!--"{{search_term}}"-->
+        <!--"{{search_term}}"-->
 
-</div><!-- /.container -->
+    </div>
+    <!-- /.container -->
 
 
-<script type="text/javascript">
-    jQuery.fn.highlight = function (str, className) {
-        var regex = new RegExp(str, "gi");
+    <script type="text/javascript">
+        jQuery.fn.highlight = function (str, className) {
+            var regex = new RegExp(str, "gi");
 
-        return this.each(function () {
-            this.innerHTML = this.innerHTML.replace(regex, function(matched) {
-                                                                return "<span class=\"" + className + "\">" + matched + "</span>";
+            return this.each(function () {
+                this.innerHTML = this.innerHTML.replace(regex, function (matched) {
+                    return "<span class=\"" + className + "\">" + matched + "</span>";
 
+                });
             });
-        });
-    };
+        };
 
-    // $("p#test").highlight("z","highlight");
-    $(".search-results").highlight("{{ search_term }}","highlight");
+        // $("p#test").highlight("z","highlight");
+        $(".search-results").highlight("{{ search_term }}", "highlight");
     // $("#alif").highlight("a","highlight");
     // $("p").highlight("a","highlight");
-</script>
+    </script>
 
 
 
-    </body>
+</body>
+
 </html>
