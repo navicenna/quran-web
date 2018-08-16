@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """
+This is an experimental script for examining letter counts throughout Quran.
+I'm not sure if it gets used anywhere else throughout the site.
+
 Created on Sat Apr 21 19:02:18 2018
 
 @author: Nav
@@ -10,14 +13,16 @@ import seaborn as sns
 from pandasql import sqldf
 from funcs import calc_val, transString
 
+
+
 # Read in datafiles
 ldf = pd.read_csv('letter_df.csv')
 
 
 # Create summary by letter
 q = '''select sura, letters as letter, count(*) as letter_count
-    from ldf 
-    group by sura, letters 
+    from ldf
+    group by sura, letters
     order by sura, letters;
     '''
 pysqldf = lambda q: sqldf(q, globals())
@@ -35,8 +40,9 @@ q = '''select min(letter) as letter, tgv, sum(letter_count) as count
 tgv_plotting_df = pysqldf(q)
 letters = [transString(l) for l in tgv_plotting_df['letter'].tolist()]
 
+
 # Create plot
-sns.lmplot( x="tgv", y="count", 
-           data=tgv_plotting_df, fit_reg=False, hue='tgv', 
+sns.lmplot( x="tgv", y="count",
+           data=tgv_plotting_df, fit_reg=False, hue='tgv',
            legend=False )
             #, markers=letters)
