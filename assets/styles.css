@@ -1,0 +1,61 @@
+/* body {
+    background: url("https://images.unsplash.com/photo-1525353369647-10dbd11745e3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c9b8660904f415c7e3d64860b911cb76&auto=format&fit=crop&w=1920&q=80");
+} */
+
+.main {
+
+    max-width: 68%;
+    margin: 3em auto;
+}
+
+/* p {
+    font-size: 120%;
+} */
+
+#rose {
+    width: 300px;
+    float: right;
+}
+
+.exercise {
+    width: 66%;
+    margin-bottom: 2em;
+}
+
+nav {
+    /* font-weight: 300; */
+    position: absolute;
+    margin-left: 0.7em;
+}
+
+nav a {
+    font-size: 108%;
+    color: black;
+    font-weight: 480;
+}
+
+.answer {
+    /* display: none; */
+    /* background: turquoise; */
+    white-space: pre;
+}
+
+.answer-container {
+    /* position: absolute; */
+    /* right: 0px; */
+    margin-left: 40%;
+    text-align: right;
+    /* float: right; */
+    /* clear: right; */
+    /* padding: 10px; */
+}
+
+.answer-container > h4 {
+    display: inline;
+    vertical-align: middle;
+}
+
+.btn {
+    margin-left: 5px;
+    vertical-align: middle;
+}
