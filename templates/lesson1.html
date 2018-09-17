@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% include 'head.html' %}
+
+
+
+    <title>Hello, world!</title>
+
+
+    <style>
+        body {
+            background: url("https://images.unsplash.com/photo-1531386450450-969f935bd522?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b0e6037f0a7cd63b48cc1562e348eb3a&auto=format&fit=crop&w=1950&q=80");
+        }
+
+        .main {
+            background: rgba(240, 240, 220, 0.845);
+            /* background: rgba(245, 245, 220, 0.845); */
+            /* background: rgb(243, 243, 221); */
+            padding: 25px;
+            /* background: rgb(245, 245, 220); */
+            border-radius: 21px;
+            /* opacity: 10%; */
+            max-width: 1020px;
+            height: 900px;
+            margin: 50px auto;
+        }
+
+        p {
+            font-size: 120%;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    {% include 'navbar.html' %}
+    <!-- <object data="navbar.html"> 
+        Your browser doesn’t support the object tag. 
+    </object> -->
+
+    <!-- <nav class="nav flex-column">
+        <a class="nav-link" href="#">Welcome Page</a>
+        <a class="nav-link" href="lesson1.html">Lesson 1 &mdash; ا ل م</a>
+        <a class="nav-link" href="lesson2.html">Link</a>
+        <a class="nav-link" href="lesson3.html">Disabled</a>
+    </nav> -->
+
+    <div class="main">
+        <h1>Welcome!</h1>
+        <br>
+        <p>This website contains a series of lessons on the Arabic alphabet. The lessons are presented in the format of a
+            dialogue between teacher and student.</p>
+        <br>
+
+        <div class="parent">
+            test parent class
+            <button class="btn btn-info test">Show answer</button>
+            <div class="answer">
+                answer in the parent
+            </div>
+
+        </div>
+        <!-- <img id="rose" src="https://images.homedepot-static.com/productImages/5e95584a-9c09-4294-ad7b-04145388f2b0/svn/globalrose-flower-bouquets-50-birthday-pink-roses-64_1000.jpg"
+            alt="rose"> -->
+
+    </div>
+
+
+
+</body>
+
+</html>

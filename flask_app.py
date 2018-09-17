@@ -1,7 +1,7 @@
 #!/usr/bin/python3.6
 # A very simple Flask Hello World app for you to get started with...
 
-from flask import Flask, redirect, render_template, request, url_for, Markup
+from flask import Flask, redirect, render_template, request, url_for, Markup, send_file
 from flask_sslify import SSLify
 import logging
 import re
@@ -282,6 +282,43 @@ def tgv_matching():
             return render_template("tgv_matching.html", comments=Word.query.all(),
                                     pairs=pairs_dict, search_package=search_package, tgv=tgv)
         return redirect(url_for('tgv_matching'))
+
+
+
+
+
+@app.route('/arabic-lessons')
+def arabic_lessons_main():
+    return render_template('main.html')
+
+
+@app.route('/part1')
+def part1():
+    return render_template('part1.html')
+@app.route('/part2')
+def part2():
+    return render_template('part2.html')
+@app.route('/part3')
+def part3():
+    return render_template('part3.html')
+@app.route('/part4')
+def part4():
+    return render_template('part4.html')
+
+
+@app.route('/slides')
+def show_static_pdf():
+    fpath = 'assets/combined-slides-min.pdf'
+    return send_file(fpath)
+
+@app.route('/carousel')
+def carousel_slides():
+    # fpath = 'static/combined-slides-min.pdf'
+    numbers = list(range(2,27))
+    return render_template('carousel_slides.html', numbers=numbers)
+
+
+
 
 
 
